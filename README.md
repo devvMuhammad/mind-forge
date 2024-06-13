@@ -1,7 +1,9 @@
-## SNIPPETS
-Snippets is a platform made for sharing code snippets across multiple lanuages for small but extremely useful and concise functionalities.
+## MIND FORGE
+
+A platform aimed to ease the preparation process for students preparing for Entry Test
 
 ## TECH STACK
+
 - Frontend: TypeScript, NextJS, TailwindCSS
 - UI Library: ShadcnUI
 - Database: Supabase
@@ -9,6 +11,7 @@ Snippets is a platform made for sharing code snippets across multiple lanuages f
 - More things will be revealed soon
 
 ## NOTE
+
 This is an open source project. If you want to contribute to it, let me know and let's start working together to make this platform better for everyone.
 
 ## Getting Started
