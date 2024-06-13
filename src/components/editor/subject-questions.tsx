@@ -26,8 +26,8 @@ export default function SubjectQuestions({ mcqs }: { mcqs: SubjectType[] }) {
           <ChevronDown className="cursor-pointer" />
         </div>
       </div>
-      <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-        {/* //!Subject MCQs Start Here */}
+      {/* //!Subject MCQs Start Here */}
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
         {subject.questions.map((question, index) => (
           <QuestionCard
             key={question.question}
