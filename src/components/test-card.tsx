@@ -2,6 +2,8 @@ import { Card, CardContent, CardFooter, CardTitle } from "./ui/card";
 import { formatDate } from "@/lib/utils";
 import { TooltipProvider } from "./ui/tooltip";
 import TestCardTooltips from "./test-card-tooltips";
+import { Button, buttonVariants } from "./ui/button";
+import Link from "next/link";
 
 type TestCardProps = {
   title: string;
@@ -12,7 +14,7 @@ type TestCardProps = {
 };
 
 export default function TestCard({
-  title = "Hamara Pehla Demo Test",
+  title = "First Demo Test for Students Before NET",
   id = "19384",
   createdAt = new Date(),
   category = "Pre Engineering",
@@ -23,10 +25,18 @@ export default function TestCard({
       {/* CARD CONTENT */}
       <CardContent className="w-full flex flex-col justify-between p-4">
         <CardTitle className="text-xl mb-2">{title}</CardTitle>
-        <TestCardProperty label="ID" value={id} />
+        <TestCardProperty label="Test ID" value={id} />
         <TestCardProperty label="Category" value={category} />
         <TestCardProperty label="Questions" value={questions} />
 
+        <div className="w-full flex justify-end">
+          <Link
+            href="/admin/editor/1"
+            className={`px-6 ${buttonVariants({ size: "sm" })}`}
+          >
+            Edit Test{" "}
+          </Link>
+        </div>
         {/* <SnippetOperations /> */}
       </CardContent>
       <CardFooter className="border-t p-4">
@@ -51,7 +61,7 @@ function TestCardProperty({
 }) {
   return (
     <div className="flex gap-2">
-      {label && <p className="font-bold">{label}:</p>}
+      {label && <p>{label}:</p>}
       <p className="text-muted-foreground">{value}</p>
     </div>
   );

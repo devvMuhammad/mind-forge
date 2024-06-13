@@ -11,3 +11,14 @@ export type DashboardNavSidebarItem = {
   href: string;
   icon: keyof typeof Icons;
 };
+
+export type QuestionType = {
+  question: string;
+  options: string[];
+  correctAnswer: string;
+};
+
+export type SubjectType = {
+  subject: string;
+  questions: QuestionType[];
+};

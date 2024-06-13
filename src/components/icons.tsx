@@ -12,6 +12,7 @@ import {
   Settings,
   Trash,
   X,
+  Edit,
 } from "lucide-react";
 
 export const Icons = {
@@ -28,4 +29,5 @@ export const Icons = {
   info: Info,
   tick: Check,
   cross: X,
+  edit: Edit,
 };
