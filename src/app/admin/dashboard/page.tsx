@@ -18,7 +18,7 @@ export default async function Page() {
           </p>
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <TestCard />
       </div>
     </>
