@@ -11,22 +11,3 @@ export type DashboardNavSidebarItem = {
   href: string;
   icon: keyof typeof Icons;
 };
-
-type ExpType = {
-  lineNumber: number;
-  text: string;
-};
-
-export type CodeSnippetType = {
-  // will check later if these two properties are required or not
-  code: string;
-  explanations: ExpType[];
-};
-
-export type EditorPageData = {
-  title: string;
-  description: string;
-  language: string;
-  framework: string | null;
-  codeSnippets: CodeSnippetType[];
-};
