@@ -18,17 +18,17 @@ export const dashboardConfig = {
   sidebarNav: [
     {
       title: "Tests",
-      href: "/dashboard",
+      href: "/admin/dashboard",
       icon: "code",
     },
     {
       title: "Students",
-      href: "/dashboard/students",
+      href: "/admin/dashboard/students",
       icon: "rocket",
     },
     {
       title: "Results",
-      href: "/dashboard/results",
+      href: "/admin/dashboard/results",
       icon: "settings",
     },
   ],
