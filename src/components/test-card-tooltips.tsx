@@ -40,7 +40,7 @@ export default function TestCardTooltips({
       </Tooltip>
       <Tooltip>
         <TooltipTrigger className="flex items-center gap-1 group">
-          <Icons.likes className="w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-red-600 cursor-pointer" />
+          <Icons.edit className="w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-red-600 cursor-pointer" />
           <span className="text-xs text-gray-500 group-hover:text-red-600 dark:text-gray-400">
             Updated
           </span>
