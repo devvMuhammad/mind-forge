@@ -1,19 +1,11 @@
-import { Icons } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { toTitleCase } from "@/lib/utils";
 import { SubjectType } from "@/types";
 import { ChevronDown } from "lucide-react";
 import QuestionCard from "./question-card";
 
 export default function SubjectQuestions({ mcqs }: { mcqs: SubjectType[] }) {
-  return mcqs.map((subject, index) => (
+  return mcqs.map((subject) => (
     <div key={subject.subject} className="space-y-4">
       {/* Subject Title */}
       <div className="flex items-center justify-between mt-4 border-b-2 pb-2">
