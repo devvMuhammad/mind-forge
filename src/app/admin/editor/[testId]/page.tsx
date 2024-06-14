@@ -21,9 +21,11 @@ type TestEditorPageData = {
   lastChangedBy: string;
 };
 
-export default function TestEditorPage({ params }: TestEditorPageProps) {
+export default function TestEditorPage({
+  params: { testId },
+}: TestEditorPageProps) {
   const dummyData: TestEditorPageData = {
-    testId: params.testId,
+    testId,
     title: "Test Title",
     category: "Pre-Engineering",
     mcqsLength: 4,
@@ -71,7 +73,7 @@ export default function TestEditorPage({ params }: TestEditorPageProps) {
         lastChangedBy={dummyData.lastChangedBy}
         lastChangedDate={dummyData.lastChangedDate}
       />
-      <SubjectQuestions mcqs={dummyData.mcqs} />
+      <SubjectQuestions testId={testId} mcqs={dummyData.mcqs} />
     </section>
   );
 }
