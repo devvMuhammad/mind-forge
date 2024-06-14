@@ -1,10 +1,18 @@
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { toTitleCase } from "@/lib/utils";
 import { SubjectType } from "@/types";
 import { ChevronDown } from "lucide-react";
 import QuestionCard from "./question-card";
+import Link from "next/link";
 
-export default function SubjectQuestions({ mcqs }: { mcqs: SubjectType[] }) {
+type SubjectQuestionsProps = {
+  testId: string;
+  mcqs: SubjectType[];
+};
+export default function SubjectQuestions({
+  testId,
+  mcqs,
+}: SubjectQuestionsProps) {
   return mcqs.map((subject) => (
     <div key={subject.subject} className="space-y-4">
       {/* Subject Title */}
@@ -14,7 +22,12 @@ export default function SubjectQuestions({ mcqs }: { mcqs: SubjectType[] }) {
           <span className="font-bold">({subject.questions.length})</span>
         </p>
         <div className="flex items-center gap-2">
-          <Button size="sm">+ Add Question</Button>
+          <Link
+            className={buttonVariants({ size: "sm" })}
+            href={`/admin/editor/${testId}/add-questions`}
+          >
+            + Add Question
+          </Link>
           <ChevronDown className="cursor-pointer" />
         </div>
       </div>

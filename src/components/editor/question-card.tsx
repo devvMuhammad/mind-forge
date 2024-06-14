@@ -19,11 +19,11 @@ export default function QuestionCard({ number, question }: QuestionCardProps) {
   return (
     <Card>
       <CardHeader className="pb-2 ">
-        <CardTitle>Question: {number + 1}</CardTitle>
+        <CardTitle className="text-base">Question: {number + 1}</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="text-sm">
         <div key={number}>
-          <p className="text-lg text-nowrap overflow-x-hidden text-ellipsis">
+          <p className="text-nowrap overflow-x-hidden text-ellipsis">
             {question.question}
           </p>
           <ul className="mt-2">
