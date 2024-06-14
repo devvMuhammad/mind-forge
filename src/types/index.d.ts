@@ -14,8 +14,9 @@ export type DashboardNavSidebarItem = {
 
 export type QuestionType = {
   question: string;
-  options: string[];
+  options: [string, string, string, string];
   correctAnswer: string;
+  explanation?: string;
 };
 
 export type SubjectType = {
