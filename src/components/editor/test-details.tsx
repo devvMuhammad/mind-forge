@@ -20,12 +20,14 @@ export default function TestDetails({
         <h1 className="text-2xl font-bold">Test Editor</h1>
         <Button>Fetch Latest Changes</Button>
       </div>
-      <p>{category}</p>
+      <h3 className=" font-bold">
+        Category: <span className="font-normal">{category}</span>{" "}
+      </h3>
       <p>
         Last changed by <span className="font-bold">{lastChangedBy}</span> on{" "}
         <span className="font-bold">{formatDate(lastChangedDate)}</span>
       </p>
-      <p className="text-xl mt-4 border-b-2 pb-2">
+      <p className="text-xl mt-4 pb-2">
         Current Questions <span className="font-bold">({mcqsLength})</span>
       </p>
     </>
