@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+
+}
+
+datasource db {
+  provider = "postgresql"
+  url               = env("DATABASE_URL")
+  directUrl         = env("DIRECT_URL")
+}
+
+model Tests {
+  @@map("tests")
+
+  id String @id @default(uuid())
+  // category 
+  category TestCategory
+  title String @unique @db.VarChar(300)
+  lastChanged DateTime @default(now())
+  lastChangedBy String @db.VarChar(100)
+  // one to many relationship with questions
+  questions Questions[]
+}
+
+model Questions {
+  @@map("questions")
+
+  id Int @id @default(autoincrement())
+  subject QuestionSubject
+  question String @db.Text
+  explanation String? @db.Text
+
+  answer Answers?
+  // many to one relationship with tests
+  testId String
+  test Tests @relation(fields: [testId],references: [id])
+
+}
+
+model Answers {
+  @@map("answers")
+
+  id Int @id @default(autoincrement())
+  answer String @db.Text
+
+  questionId Int @unique
+  question Questions @relation(fields: [questionId], references: [id])
+  @@index([questionId])
+}
+
+// enums
+enum TestCategory {
+  engineering
+  medical
+  ics
+  business
+}
+
+enum QuestionSubject {
+  mathematics
+  physics
+  chemistry
+  english
+  iq
+  biology
+  computer
+  basic_maths
+}
