@@ -26,13 +26,13 @@ export default function TestEditorPage({
           subject: "mathematics",
           questions: [
             {
-              question:
+              statement:
                 "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem inventore id dolore tempore repellendus voluptatibus sint dolorum velit quaerat nihil cum harum nemo ad quam, neque ullam asperiores incidunt impedit corrupti ab mollitia ut? Facilis cum laboriosam molestiae dolor praesentium eveniet fuga perspiciatis, culpa debitis minima in alias nobis quae",
               options: ["Option 1", "Option 2", "Option 3", "Option 4"],
               correctAnswer: "Option 1",
             },
             {
-              question: "Question 2",
+              statement: "Question 2",
               options: ["Option 1", "Option 2", "Option 3", "Option 4"],
               correctAnswer: "Option 2",
             },

@@ -13,7 +13,7 @@ export type DashboardNavSidebarItem = {
 };
 
 export type QuestionType = {
-  question: string;
+  statement: string;
   options: [string, string, string, string];
   correctAnswer: string;
   explanation?: string;
