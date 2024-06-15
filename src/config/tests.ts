@@ -1,6 +1,6 @@
 export const testsConfig = {
   categories: ["engineering", "medical", "ics", "business"],
-  tests: [
+  subjects: [
     "mathematics",
     "physics",
     "chemistry",
