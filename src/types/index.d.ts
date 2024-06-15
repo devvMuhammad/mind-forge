@@ -23,3 +23,13 @@ export type SubjectType = {
   subject: string;
   questions: QuestionType[];
 };
+
+export type TestType = {
+  testId: string;
+  category: string;
+  title: string;
+  mcqs: SubjectType[];
+  // mcqsLength: number;
+  lastChangedDate: Date;
+  lastChangedBy: string;
+};
