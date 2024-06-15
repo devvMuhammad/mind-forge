@@ -1,4 +1,6 @@
+import CreateTestButton from "@/components/create-test";
 import TestCard from "@/components/test-card";
+import { Button } from "@/components/ui/button";
 
 export const metadata = {
   title: "Dashboard",
@@ -11,8 +13,11 @@ export default async function Page() {
   return (
     <>
       <div className="flex items-center justify-between px-2">
-        <div className="grid gap-1">
-          <h1 className="font-semibold text-2xl md:text-3xl">Snippets</h1>
+        <div className="w-full flex flex-col gap-1">
+          <div className="w-full flex pt-2 justify-between">
+            <h1 className="font-semibold text-2xl md:text-3xl">Snippets</h1>
+            <CreateTestButton />
+          </div>
           <p className="text-base text-muted-foreground">
             View, Create, Delete & Edit your Snippets here
           </p>
