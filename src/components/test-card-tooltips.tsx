@@ -5,13 +5,13 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 type TestCardTooltipsProps = {
   createdAt: Date;
   attempts: number;
-  updatedAt: Date;
+  lastChanged: Date;
 };
 
 export default function TestCardTooltips({
   createdAt,
   attempts,
-  updatedAt,
+  lastChanged,
 }: TestCardTooltipsProps) {
   return (
     <div className="w-full flex justify-evenly items-center gap-4">
@@ -46,7 +46,7 @@ export default function TestCardTooltips({
           </span>
         </TooltipTrigger>
         <TooltipContent className="text-red-600 border-none text-xs px-2 py-1">
-          {formatDate(updatedAt)}
+          {formatDate(lastChanged)}
         </TooltipContent>
       </Tooltip>
     </div>

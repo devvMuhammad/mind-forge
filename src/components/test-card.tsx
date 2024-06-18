@@ -8,17 +8,21 @@ import Link from "next/link";
 type TestCardProps = {
   title: string;
   id: string;
-  createdAt: Date;
   category: string;
-  questions: number;
+  questionsLength: number;
+  createdAt: Date;
+  lastChanged: Date;
+  attempts: number;
 };
 
 export default function TestCard({
   title = "First Demo Test for Students Before NET",
   id = "19384",
-  createdAt = new Date(),
   category = "Pre Engineering",
-  questions = 75,
+  questionsLength = 75,
+  attempts = 100,
+  createdAt = new Date(),
+  lastChanged = new Date(),
 }: Partial<TestCardProps>) {
   return (
     <Card>
@@ -27,7 +31,7 @@ export default function TestCard({
         <CardTitle className="text-xl mb-2">{title}</CardTitle>
         <TestCardProperty label="Test ID" value={id} />
         <TestCardProperty label="Category" value={category} />
-        <TestCardProperty label="Questions" value={questions} />
+        <TestCardProperty label="Questions" value={questionsLength} />
 
         <div className="w-full flex justify-end">
           <Link
@@ -42,9 +46,9 @@ export default function TestCard({
       <CardFooter className="border-t p-4">
         <TooltipProvider delayDuration={0}>
           <TestCardTooltips
-            createdAt={new Date()}
-            attempts={100}
-            updatedAt={new Date()}
+            createdAt={createdAt}
+            attempts={attempts}
+            lastChanged={lastChanged}
           />
         </TooltipProvider>
       </CardFooter>
