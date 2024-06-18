@@ -15,13 +15,16 @@ model Tests {
   @@map("tests")
 
   id String @id @default(uuid())
-  // category 
   category TestCategory
   title String @unique @db.VarChar(300)
-  lastChanged DateTime @default(now())
-  lastChangedBy String @db.VarChar(100)
+  attempts Int
+
   // one to many relationship with questions
   questions Questions[]
+
+  createdAt DateTime @default(now())
+  lastChanged DateTime @updatedAt
+  lastChangedBy String @db.VarChar(100)
 }
 
 model Questions {
@@ -32,23 +35,13 @@ model Questions {
   question String @db.Text
   explanation String? @db.Text
 
-  answer Answers?
+  answer Int @db.SmallInt
   // many to one relationship with tests
   testId String
   test Tests @relation(fields: [testId],references: [id])
 
 }
 
-model Answers {
-  @@map("answers")
-
-  id Int @id @default(autoincrement())
-  answer String @db.Text
-
-  questionId Int @unique
-  question Questions @relation(fields: [questionId], references: [id])
-  @@index([questionId])
-}
 
 // enums
 enum TestCategory {
