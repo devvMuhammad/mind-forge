@@ -33,3 +33,13 @@ export type TestType = {
   lastChangedDate: Date;
   lastChangedBy: string;
 };
+
+export type ErrorResponse = {
+  success: false;
+  message: string;
+};
+
+export type GoodResponse = {
+  success: true;
+  data: any;
+};
