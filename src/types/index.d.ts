@@ -1,5 +1,6 @@
 import { Icons } from "@/components/icons";
 import { dashboardConfig } from "@/config/dashboard";
+import { $Enums } from "@prisma/client";
 
 export type DashboardNavMainItem = {
   title: string;
@@ -11,6 +12,9 @@ export type DashboardNavSidebarItem = {
   href: string;
   icon: keyof typeof Icons;
 };
+
+export type PossibleCategoryType = $Enums.TestCategory;
+export type PossibleSubjectType = $Enums.QuestionSubject;
 
 export type QuestionType = {
   statement: string;
@@ -29,6 +33,7 @@ export type TestType = {
   category: string;
   title: string;
   mcqs: SubjectType[];
+  attempts: number;
   // mcqsLength: number;
   lastChangedDate: Date;
   lastChangedBy: string;

@@ -10,4 +10,4 @@ export const testsConfig = {
     "computer",
     "basic_maths",
   ],
-};
+} as const;
