@@ -32,6 +32,7 @@ export default function CreateTestForm() {
   const { isPending, mutate } = useMutation({
     mutationFn: createTest,
     onSuccess: (data) => {
+      reset();
       console.log(data.data);
     },
     onError: (error) => {
@@ -45,7 +46,6 @@ export default function CreateTestForm() {
       title: formData.title,
       lastChangedBy: "Jawad Bambari", // fetch from session
     });
-    reset();
   }
   return (
     <form
