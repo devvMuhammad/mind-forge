@@ -12,21 +12,44 @@ import {
 } from "@/components/ui/select";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
+import { ZodType, z } from "zod";
 import { QuestionType } from "@/types";
-import { Dispatch, SetStateAction } from "react";
+// import { Dispatch, SetStateAction } from "react";
 
 const EditQuestionSchema = z.object({
-  question: z.string().min(1, { message: "Question is required" }),
-  option1: z.string().min(1, { message: "Option 1 is required" }),
-  option2: z.string().min(1, { message: "Option 2 is required" }),
-  option3: z.string().min(1, { message: "Option 3 is required" }),
-  option4: z.string().min(1, { message: "Option 4 is required" }),
-  "correct-option": z.string().min(1, "Correct option is required"),
+  statement: z
+    .string({
+      required_error: "Question is required",
+    })
+    .trim()
+    .min(1, { message: "Question is required" }),
+  option1: z
+    .string({ required_error: "Option 1 is required" })
+    .trim()
+    .min(1, { message: "Option 1 is required" }),
+  option2: z
+    .string({ required_error: "Option 2 is required" })
+    .trim()
+    .min(1, { message: "Option 2 is required" }),
+  option3: z
+    .string({ required_error: "Option 3 is required" })
+    .trim()
+    .min(1, { message: "Option 3 is required" }),
+  option4: z
+    .string({ required_error: "Option 4 is required" })
+    .trim()
+    .min(1, { message: "Option 4 is required" }),
+  answer: z.coerce
+    .number({
+      invalid_type_error: "Answer index is required",
+    })
+    .min(0, { message: "Minimum index is 0" })
+    .max(3, { message: "Maximum index is 3" }),
   explanation: z.string().optional(),
 });
 
 type TEditQuestionSchema = z.infer<typeof EditQuestionSchema>;
+
 type AddQuestionsFormProps = {
   addQuestion: (question: QuestionType) => void;
 };
@@ -43,22 +66,20 @@ export default function AddQuestionsForm({
   } = useForm<TEditQuestionSchema>({
     resolver: zodResolver(EditQuestionSchema),
   });
-  const onSubmit = (data: TEditQuestionSchema) => {
-    // perform some data transformations
+  const onSubmit = (formData: TEditQuestionSchema) => {
+    // accumulate options into an array
     const transformedOptions = [
-      data.option1,
-      data.option2,
-      data.option3,
-      data.option4,
+      formData.option1,
+      formData.option2,
+      formData.option3,
+      formData.option4,
     ];
     // remember that we obtain either 0,1,2,3 from the correct option field
-    const transformedCorrectAnswer =
-      transformedOptions[+data["correct-option"]];
     const transformedData = {
-      question: data.question,
+      statement: formData.statement,
       options: transformedOptions as QuestionType["options"],
-      correctAnswer: transformedCorrectAnswer,
-      explanation: data.explanation,
+      answer: formData.answer,
+      explanation: formData.explanation,
     } satisfies QuestionType;
 
     addQuestion(transformedData);
@@ -68,13 +89,13 @@ export default function AddQuestionsForm({
     <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-4">
       {/* @Question statement */}
       <div className="grid gap-2">
-        <Label htmlFor="question">Question Statement</Label>
+        <Label htmlFor="statement">Question Statement</Label>
         <Controller
           control={control}
-          name="question"
+          name="statement"
           render={({ field: { value, onBlur, onChange } }) => (
             <Textarea
-              id="question"
+              id="statement"
               value={value}
               onChange={onChange}
               onBlur={onBlur}
@@ -83,13 +104,13 @@ export default function AddQuestionsForm({
           )}
         />
 
-        {errors.question && (
-          <p className="text-red-500">{errors.question.message}</p>
+        {errors.statement && (
+          <p className="text-red-500">{errors.statement.message}</p>
         )}
       </div>
       {/* @Question options */}
-      {options.map((option, i) => (
-        <div key={option} className="grid gap-2">
+      {options.map((_, i) => (
+        <div key={i} className="grid gap-2">
           <Label htmlFor={`option${i + 1}`}>Option {i + 1}</Label>
           <Controller
             control={control}
@@ -113,15 +134,18 @@ export default function AddQuestionsForm({
       ))}
       {/* @Correct Option */}
       <div className="grid gap-2">
-        <Label htmlFor="correct-option">Correct Option</Label>
+        <Label htmlFor="answer">Correct Option</Label>
 
         <Controller
           control={control}
-          name="correct-option"
+          name="answer"
           render={({ field: { value, onChange } }) => (
-            <Select value={value} onValueChange={onChange}>
-              <SelectTrigger id="correct-option">
-                <SelectValue placeholder="Select correct option" />
+            <Select
+              value={value === undefined ? undefined : `${value}`} // this code for showing the placeholder becuase it only shows when answer is undefined
+              onValueChange={onChange}
+            >
+              <SelectTrigger id="answer">
+                <SelectValue placeholder="Select an option" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="0">Option 1</SelectItem>
@@ -132,8 +156,8 @@ export default function AddQuestionsForm({
             </Select>
           )}
         />
-        {errors["correct-option"] && (
-          <p className="text-red-500">{errors["correct-option"].message}</p>
+        {errors.answer && (
+          <p className="text-red-500">{errors.answer.message}</p>
         )}
       </div>
       {/* @Explanation */}

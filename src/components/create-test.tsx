@@ -1,4 +1,5 @@
 "use client";
+import { createTest } from "@/app/actions/create-test";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -11,8 +12,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { testsConfig } from "@/config/tests";
 import { toTitleCase } from "@/lib/utils";
+// import { useAction } from "next-safe-action/hooks";
 
 export default function CreateTestButton() {
+  // const { execute } = useAction(createTest, { onSuccess: (args) => args.data });
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -23,10 +27,7 @@ export default function CreateTestButton() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           {testsConfig.categories.map((category) => (
-            <DropdownMenuItem
-              key={category}
-              onSelect={() => console.log(category)}
-            >
+            <DropdownMenuItem key={category}>
               {toTitleCase(category)}
             </DropdownMenuItem>
           ))}

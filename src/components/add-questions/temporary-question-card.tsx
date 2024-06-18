@@ -20,7 +20,7 @@ export default function TemporaryQuestionCard({
   question,
   removeQuestion,
 }: TemporaryQuestionCardProps) {
-  const optionIsCorrect = (option: string) => option === question.correctAnswer;
+  const optionIsCorrect = (index: number) => index === question.answer;
   const onDelete = () => removeQuestion(number); // number is actually the index here
   return (
     <Card className="relative">
@@ -38,23 +38,24 @@ export default function TemporaryQuestionCard({
       <CardContent className="text-sm">
         <div>
           <p className="text-nowrap overflow-x-hidden text-ellipsis">
-            {question.question}
+            {question.statement}
           </p>
           <ul className="mt-2">
-            {question.options.map((option, index) => (
+            {question.options.map((option, currentIndex) => (
               <li
-                key={index}
+                key={currentIndex}
                 className="flex items-center gap-2  text-nowrap overflow-x-hidden "
               >
                 <input
                   type="radio"
                   className="bg-red-500"
-                  disabled={!optionIsCorrect(option)}
-                  checked={optionIsCorrect(option)}
+                  disabled={!optionIsCorrect(currentIndex)}
+                  checked={optionIsCorrect(currentIndex)}
+                  readOnly
                 />
                 <p
                   className={`${
-                    !optionIsCorrect(option) && "text-muted-foreground"
+                    !optionIsCorrect(currentIndex) && "text-muted-foreground"
                   }`}
                 >
                   {option}

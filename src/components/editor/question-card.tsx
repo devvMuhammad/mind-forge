@@ -15,7 +15,7 @@ type QuestionCardProps = {
 };
 
 export default function QuestionCard({ number, question }: QuestionCardProps) {
-  const optionIsCorrect = (option: string) => option === question.correctAnswer;
+  const optionIsCorrect = (index: number) => index === question.answer;
   return (
     <Card>
       <CardHeader className="pb-2 ">
@@ -24,7 +24,7 @@ export default function QuestionCard({ number, question }: QuestionCardProps) {
       <CardContent className="text-sm">
         <div key={number}>
           <p className="text-nowrap overflow-x-hidden text-ellipsis">
-            {question.question}
+            {question.statement}
           </p>
           <ul className="mt-2">
             {question.options.map((option, index) => (
@@ -35,13 +35,13 @@ export default function QuestionCard({ number, question }: QuestionCardProps) {
                 <input
                   type="radio"
                   className="bg-red-500"
-                  disabled={!optionIsCorrect(option)}
-                  checked={optionIsCorrect(option)}
-                  name={question.question}
+                  disabled={!optionIsCorrect(index)}
+                  checked={optionIsCorrect(index)}
+                  // name={question.statement}
                 />
                 <p
                   className={`${
-                    !optionIsCorrect(option) && "text-muted-foreground"
+                    !optionIsCorrect(index) && "text-muted-foreground"
                   }`}
                 >
                   {option}

@@ -15,7 +15,7 @@ export type DashboardNavSidebarItem = {
 export type QuestionType = {
   statement: string;
   options: [string, string, string, string];
-  answer: string;
+  answer: number; // this is the index of the answer from 0 to 3
   explanation?: string;
 };
 

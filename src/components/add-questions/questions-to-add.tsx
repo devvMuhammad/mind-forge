@@ -23,7 +23,7 @@ export default function QuestionsToAdd({
       <div className="h-screen py-2 pl-4 space-y-2 border-l-2 overflow-y-auto">
         {questionsToBeAdded.map((question, index) => (
           <TemporaryQuestionCard
-            key={question.question + index}
+            key={question.statement + index}
             number={index}
             question={question}
             removeQuestion={removeQuestion}
