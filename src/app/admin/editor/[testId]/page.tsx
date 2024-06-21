@@ -3,6 +3,9 @@ import TestDetails from "@/components/editor/test-details";
 import { TestType } from "@/types";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
+import { getQuestions } from "@/app/actions/get-questions";
+import { Button, buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
 
 type TestEditorPageProps = {
   params: {
@@ -19,83 +22,34 @@ export default async function TestEditorPage({
   params: { testId },
 }: TestEditorPageProps) {
   // prisma.questions.grou
-  const test1 = await prisma.tests.findUnique({
+  const testDetails = await prisma.tests.findUnique({
     where: { id: testId },
     include: { questions: true },
   });
-  // const test2 = await prisma.questions.groupBy({
-  //   where: {
-  //     testId: {
-  //       equals: testId,
-  //     },
-  //   },
-  //   by: "subject",
-  // });
-  // console.log("details of test2", test2);
-  if (!test1) redirect("/admin/dashboard");
-  const dummyData = {
-    testData: {
-      testId,
-      title: "Test Title",
-      category: "Pre-Engineering",
-      mcqs: [
-        {
-          subject: "mathematics",
-          questions: [
-            {
-              statement:
-                "Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem inventore id dolore tempore repellendus voluptatibus sint dolorum velit quaerat nihil cum harum nemo ad quam, neque ullam asperiores incidunt impedit corrupti ab mollitia ut? Facilis cum laboriosam molestiae dolor praesentium eveniet fuga perspiciatis, culpa debitis minima in alias nobis quae",
-              options: ["Option 1", "Option 2", "Option 3", "Option 4"] as [
-                string,
-                string,
-                string,
-                string
-              ],
-              answer: 0,
-            },
-            {
-              statement: "Question 2",
-              options: ["Option 1", "Option 2", "Option 3", "Option 4"] as [
-                string,
-                string,
-                string,
-                string
-              ],
-              answer: 1,
-            },
-          ],
-        },
-        // {
-        //   subject: "physics",
-        //   questions: [
-        //     {
-        //       question: "Question 1",
-        //       options: ["Option 1", "Option 2", "Option 3", "Option 4"],
-        //       correctAnswer: "Option 3",
-        //     },
-        //     {
-        //       question: "Question 2",
-        //       options: ["Option 1", "Option 2", "Option 3", "Option 4"],
-        //       correctAnswer: "Option 4",
-        //     },
-        //   ],
-        // },
-      ],
-      lastChangedDate: new Date(),
-      lastChangedBy: "Asjad Khudad",
-    },
-    mcqsLength: 4,
-  };
+  if (!testDetails) redirect("/admin/dashboard");
+  const questions = await getQuestions(testId);
+  console.log("here are the questions", questions);
   return (
     <section>
       <TestDetails
-        category={test1.category}
-        mcqsLength={test1.questions.length}
-        lastChangedBy={test1.lastChangedBy}
-        lastChangedDate={test1.lastChanged}
+        category={testDetails.category}
+        mcqsLength={testDetails.questions.length}
+        lastChangedBy={testDetails.lastChangedBy}
+        lastChangedDate={testDetails.lastChanged}
       />
-      <SubjectQuestions testId={testId} mcqs={dummyData.testData.mcqs} />
-      {/* <SubjectQuestions testId={testId} /> */}
+      <div className="flex items-center gap-2">
+        <Link
+          className={buttonVariants()}
+          href={`/admin/editor/${testId}/add-questions?category=${testDetails.category}`}
+        >
+          + Add Questions Here
+        </Link>
+      </div>
+      <SubjectQuestions
+        testId={testId}
+        testCategory={testDetails.category}
+        mcqs={questions}
+      />
     </section>
   );
 }
