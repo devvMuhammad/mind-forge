@@ -17,6 +17,7 @@ import {
 import { SelectTrigger } from "@radix-ui/react-select";
 import { toTitleCase } from "@/lib/utils";
 import { Label } from "../ui/label";
+import { useEditingArea } from "@/hooks/useEditingArea";
 
 export type QuestionToBeAddedType = QuestionType & {
   testId: string;
@@ -30,27 +31,14 @@ export default function EditingArea({
   testId: string;
   currentCategory: $Enums.TestCategory;
 }) {
-  const [currentSubject, setCurrentSubject] = useState<
-    SubjectTypesForCategory<typeof currentCategory> | undefined
-  >();
-  const [questionsToBeAdded, setQuestionsToBeAdded] = useState<
-    QuestionToBeAddedType[]
-  >([]);
-
-  const addQuestion = (newQuestion: QuestionType) => {
-    setQuestionsToBeAdded([
-      ...questionsToBeAdded,
-      { testId, subject: currentSubject as any, ...newQuestion },
-    ]);
-  };
-  // temporary id in clinet will be the index
-  const removeQuestion = (questionTempId: number) => {
-    setQuestionsToBeAdded((prev) =>
-      prev.filter((_, i) => i !== questionTempId)
-    );
-  };
-  // to be done after submitting the questions successfully
-  const emptyQuestions = () => setQuestionsToBeAdded([]);
+  const {
+    currentSubject,
+    setCurrentSubject,
+    addQuestion,
+    questionsToBeAdded,
+    removeQuestion,
+    emptyQuestions,
+  } = useEditingArea(currentCategory, testId);
   return (
     <>
       <SelectSubject
