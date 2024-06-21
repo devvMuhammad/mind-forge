@@ -7,10 +7,12 @@ import Link from "next/link";
 
 type SubjectQuestionsProps = {
   testId: string;
+  testCategory: string;
   mcqs: SubjectType[];
 };
 export default function SubjectQuestions({
   testId,
+  testCategory,
   mcqs,
 }: SubjectQuestionsProps) {
   return mcqs.map((subject) => (
@@ -21,22 +23,13 @@ export default function SubjectQuestions({
           {toTitleCase(subject.subject)}{" "}
           <span className="font-bold">({subject.questions.length})</span>
         </p>
-        <div className="flex items-center gap-2">
-          <Link
-            className={buttonVariants({ size: "sm" })}
-            href={`/admin/editor/${testId}/add-questions?subject=${subject.subject}`}
-          >
-            + Add Question
-          </Link>
-          {/* <ChevronDown className="cursor-pointer" /> */}
-        </div>
       </div>
       {/* //!Subject MCQs Start Here */}
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
         {subject.questions.map((question, index) => (
           <QuestionCard
             key={question.statement}
-            number={index + 1}
+            index={index}
             question={question}
           />
         ))}

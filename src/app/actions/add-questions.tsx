@@ -10,15 +10,17 @@ type QuestionToBeAddedType = QuestionType & {
 };
 
 export async function addQuestions(questions: QuestionToBeAddedType[]) {
+  const testId = questions[0].testId; // kisi aik se bhi utha lo
   const result = await prisma.$transaction([
     prisma.questions.createMany({
       data: questions,
     }),
     prisma.tests.update({
-      where: { id: questions[0].testId },
+      where: { id: testId },
       data: { lastChanged: new Date() },
     }),
   ]);
   revalidatePath("/admin/dashboard"); // in order to update the cache to display latest change
+  revalidatePath(`/admin/editor/${testId}`); // in order to update the cache to display latest change
   return result;
 }

@@ -10,19 +10,19 @@ import {
 import { QuestionType } from "@/types";
 
 type QuestionCardProps = {
-  number: number;
+  index: number;
   question: QuestionType;
 };
 
-export default function QuestionCard({ number, question }: QuestionCardProps) {
+export default function QuestionCard({ index, question }: QuestionCardProps) {
   const optionIsCorrect = (index: number) => index === question.answer;
   return (
     <Card>
       <CardHeader className="pb-2 ">
-        <CardTitle className="text-base">Question: {number + 1}</CardTitle>
+        <CardTitle className="text-base">Question: {index + 1}</CardTitle>
       </CardHeader>
       <CardContent className="text-sm">
-        <div key={number}>
+        <div key={index}>
           <p className="text-nowrap overflow-x-hidden text-ellipsis">
             {question.statement}
           </p>
