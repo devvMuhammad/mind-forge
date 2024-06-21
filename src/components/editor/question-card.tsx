@@ -37,6 +37,7 @@ export default function QuestionCard({ number, question }: QuestionCardProps) {
                   className="bg-red-500"
                   disabled={!optionIsCorrect(index)}
                   checked={optionIsCorrect(index)}
+                  readOnly
                   // name={question.statement}
                 />
                 <p
