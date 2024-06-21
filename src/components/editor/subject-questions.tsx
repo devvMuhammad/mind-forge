@@ -24,11 +24,11 @@ export default function SubjectQuestions({
         <div className="flex items-center gap-2">
           <Link
             className={buttonVariants({ size: "sm" })}
-            href={`/admin/editor/${testId}/add-questions`}
+            href={`/admin/editor/${testId}/add-questions?subject=${subject.subject}`}
           >
             + Add Question
           </Link>
-          <ChevronDown className="cursor-pointer" />
+          {/* <ChevronDown className="cursor-pointer" /> */}
         </div>
       </div>
       {/* //!Subject MCQs Start Here */}
