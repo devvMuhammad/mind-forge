@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default async function Loading() {
+export default function Loading() {
   return (
     <>
       <div className="flex flex-col gap-2">
