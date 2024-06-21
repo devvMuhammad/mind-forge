@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { QuestionType } from "@/types";
+import { CardOperations } from "../card-operations";
 
 type QuestionCardProps = {
   index: number;
@@ -19,13 +20,17 @@ export default function QuestionCard({ index, question }: QuestionCardProps) {
   return (
     <Card>
       <CardHeader className="pb-2 ">
-        <CardTitle className="text-base">Question: {index + 1}</CardTitle>
+        <div className="w-full flex justify-between">
+          <CardTitle className="text-base">Question: {index + 1}</CardTitle>
+          <CardOperations />
+        </div>
       </CardHeader>
       <CardContent className="text-sm">
         <div key={index}>
           <p className="text-nowrap overflow-x-hidden text-ellipsis">
             {question.statement}
           </p>
+
           <ul className="mt-2">
             {question.options.map((option, index) => (
               <li
@@ -52,17 +57,6 @@ export default function QuestionCard({ index, question }: QuestionCardProps) {
           </ul>
         </div>
       </CardContent>
-      <CardFooter className="flex justify-between">
-        <Button>View</Button>
-        <div className="flex gap-2">
-          <Button size="icon">
-            <Icons.edit />
-          </Button>
-          <Button variant="destructive" size="icon">
-            <Icons.trash />
-          </Button>
-        </div>
-      </CardFooter>
     </Card>
   );
 }
