@@ -59,7 +59,10 @@ export default function EditingArea({
         setCurrentSubject={setCurrentSubject}
       />
       <div className="grid gap-4 grid-cols-2">
-        <AddQuestionsForm addQuestion={addQuestion} />
+        <AddQuestionsForm
+          currentSubject={currentSubject}
+          addQuestion={addQuestion}
+        />
         <QuestionsToAdd
           questionsToBeAdded={questionsToBeAdded}
           removeQuestion={removeQuestion}

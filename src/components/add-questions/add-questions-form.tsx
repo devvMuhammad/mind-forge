@@ -52,10 +52,12 @@ type TEditQuestionSchema = z.infer<typeof EditQuestionSchema>;
 
 type AddQuestionsFormProps = {
   addQuestion: (question: QuestionType) => void;
+  currentSubject: string | undefined;
 };
 
 export default function AddQuestionsForm({
   addQuestion,
+  currentSubject,
 }: AddQuestionsFormProps) {
   // console.log("params in add questions page", testId);
   const {
@@ -181,7 +183,9 @@ export default function AddQuestionsForm({
         )}
       </div>
       <div className="flex justify-end">
-        <Button type="submit">Submit</Button>
+        <Button disabled={currentSubject === undefined} type="submit">
+          Submit
+        </Button>
       </div>
     </form>
   );
