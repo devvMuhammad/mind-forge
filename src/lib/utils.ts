@@ -12,6 +12,16 @@ export function formatDate(date: Date) {
   });
 }
 
+const specialCases: Record<string, string> = {
+  basic_maths: "Basic Mathematics",
+  iq: "Intelligence",
+};
+
 export function toTitleCase(str: string) {
+  // Check if the string is in the special cases mapping
+  if (specialCases[str.toLowerCase()]) {
+    return specialCases[str.toLowerCase()];
+  }
+
   return str.replace(/\b\w/g, (char) => char.toUpperCase());
 }
