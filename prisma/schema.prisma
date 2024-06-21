@@ -40,7 +40,6 @@ model Questions {
   testId String
   test Tests @relation(fields: [testId],references: [id])
 
-  // one to many relationship with tests
   options Json
 }
 
