@@ -32,7 +32,7 @@ model Questions {
 
   id Int @id @default(autoincrement())
   subject QuestionSubject
-  question String @db.Text
+  statement String @db.Text
   explanation String? @db.Text
 
   answer Int @db.SmallInt
@@ -40,8 +40,9 @@ model Questions {
   testId String
   test Tests @relation(fields: [testId],references: [id])
 
+  // one to many relationship with tests
+  options Json
 }
-
 
 // enums
 enum TestCategory {
