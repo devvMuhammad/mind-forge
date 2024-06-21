@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 // import { Post } from "@prisma/client"
 import {
   AlertDialog,
@@ -24,27 +23,7 @@ import {
 //! will introduce this later to show result states of operations
 // import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
-import { buttonVariants } from "./ui/button";
-
-// async function deletePost(postId: string) {
-//   const response = await fetch(`/api/posts/${postId}`, {
-//     method: "DELETE",
-//   });
-
-//   if (!response?.ok) {
-//     toast({
-//       title: "Something went wrong.",
-//       description: "Your post was not deleted. Please try again.",
-//       variant: "destructive",
-//     });
-//   }
-
-//   return true;
-// }
-
-// interface PostOperationsProps {
-//   post: Pick<Post, "id" | "title">;
-// }
+import QuestionEdit from "./question-edit";
 
 export function CardOperations() {
   //! LOGIC WILL BE DISCUSSED LATER
@@ -59,12 +38,7 @@ export function CardOperations() {
           <Icons.ellipsis className=" h-4 w-4" />
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem>
-            {/* <Link href={`/editor/${post.id}`} className="flex w-full"> */}
-            <Link href="#" className="flex w-full">
-              View
-            </Link>
-          </DropdownMenuItem>
+          <QuestionEdit />
           <DropdownMenuItem>
             {/* <Link href={`/editor/${post.id}`} className="flex w-full"> */}
             <Link href="#" className="flex w-full">
