@@ -1,9 +1,9 @@
 import { Card, CardContent, CardFooter, CardTitle } from "./ui/card";
-import { formatDate } from "@/lib/utils";
 import { TooltipProvider } from "./ui/tooltip";
 import TestCardTooltips from "./test-card-tooltips";
-import { Button, buttonVariants } from "./ui/button";
+import { buttonVariants } from "./ui/button";
 import Link from "next/link";
+import { toTitleCase } from "@/lib/utils";
 
 type TestCardProps = {
   title: string;
@@ -16,26 +16,26 @@ type TestCardProps = {
 };
 
 export default function TestCard({
-  title = "First Demo Test for Students Before NET",
-  id = "19384",
-  category = "Pre Engineering",
-  questionsLength = 75,
-  attempts = 100,
-  createdAt = new Date(),
-  lastChanged = new Date(),
-}: Partial<TestCardProps>) {
+  title,
+  id,
+  category,
+  questionsLength,
+  attempts,
+  createdAt,
+  lastChanged,
+}: TestCardProps) {
   return (
     <Card>
       {/* CARD CONTENT */}
       <CardContent className="w-full flex flex-col justify-between p-4">
         <CardTitle className="text-xl mb-2">{title}</CardTitle>
         <TestCardProperty label="Test ID" value={id} />
-        <TestCardProperty label="Category" value={category} />
+        <TestCardProperty label="Category" value={toTitleCase(category)} />
         <TestCardProperty label="Questions" value={questionsLength} />
 
         <div className="w-full flex justify-end">
           <Link
-            href="/admin/editor/1"
+            href={`/admin/editor/${id}`}
             className={`px-6 ${buttonVariants({ size: "sm" })}`}
           >
             Edit Test{" "}
@@ -64,9 +64,11 @@ function TestCardProperty({
   value: string | number;
 }) {
   return (
-    <div className="flex gap-2">
+    <div className="grid grid-cols-[auto_1fr] gap-2">
       {label && <p>{label}:</p>}
-      <p className="text-muted-foreground">{value}</p>
+      <p className="text-muted-foreground text-nowrap overflow-x-hidden text-ellipsis">
+        {value}
+      </p>
     </div>
   );
 }
