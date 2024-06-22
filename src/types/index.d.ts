@@ -17,6 +17,7 @@ export type PossibleCategoryType = $Enums.TestCategory;
 export type PossibleSubjectType = $Enums.QuestionSubject;
 
 export type QuestionType = {
+  id?: number;
   statement: string;
   options: [string, string, string, string];
   answer: number; // this is the index of the answer from 0 to 3
