@@ -86,7 +86,7 @@ function SelectSubject({
           id="subject"
           className="h-10 px-4 rounded-md border-2 border-text-muted-foreground"
         >
-          <SelectValue placeholder="Select a fruit" />
+          <SelectValue placeholder="Select a subject" />
         </SelectTrigger>
         <SelectContent id="subject">
           <SelectGroup>
