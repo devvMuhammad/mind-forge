@@ -4,6 +4,7 @@ import { SubjectType } from "@/types";
 import { ChevronDown } from "lucide-react";
 import QuestionCard from "./question-card";
 import Link from "next/link";
+import QuestionCardContextProvider from "@/contexts/question-card-context";
 
 type SubjectQuestionsProps = {
   testId: string;
@@ -27,11 +28,12 @@ export default function SubjectQuestions({
       {/* //!Subject MCQs Start Here */}
       <div className="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
         {subject.questions.map((question, index) => (
-          <QuestionCard
-            key={question.statement}
-            index={index}
-            question={question}
-          />
+          <QuestionCardContextProvider
+            key={question.id}
+            value={{ testId, subject: subject.subject as any, question }}
+          >
+            <QuestionCard key={question.id} index={index} question={question} />
+          </QuestionCardContextProvider>
         ))}
       </div>
     </div>

@@ -18,6 +18,7 @@ import { SelectTrigger } from "@radix-ui/react-select";
 import { toTitleCase } from "@/lib/utils";
 import { Label } from "../ui/label";
 import { useEditingArea } from "@/hooks/useEditingArea";
+import QuestionForm from "../question-form";
 
 export type QuestionToBeAddedType = QuestionType & {
   testId: string;
@@ -47,9 +48,14 @@ export default function EditingArea({
         setCurrentSubject={setCurrentSubject}
       />
       <div className="grid gap-4 grid-cols-2">
-        <AddQuestionsForm
+        {/* <AddQuestionsForm
           currentSubject={currentSubject}
           addQuestion={addQuestion}
+        /> */}
+        <QuestionForm
+          mode="add"
+          actionToPerformWithData={addQuestion}
+          subject={currentSubject}
         />
         <QuestionsToAdd
           questionsToBeAdded={questionsToBeAdded}
