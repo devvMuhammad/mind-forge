@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { QuestionType } from "@/types";
 import { CardOperations } from "../card-operations";
+import QuestionCardContextProvider from "@/contexts/question-card-context";
 
 type QuestionCardProps = {
   index: number;
@@ -22,7 +23,7 @@ export default function QuestionCard({ index, question }: QuestionCardProps) {
       <CardHeader className="pb-2 ">
         <div className="w-full flex justify-between">
           <CardTitle className="text-base">Question: {index + 1}</CardTitle>
-          <CardOperations />
+          <CardOperations question={question} />
         </div>
       </CardHeader>
       <CardContent className="text-sm">

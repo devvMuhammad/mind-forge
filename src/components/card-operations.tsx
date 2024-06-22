@@ -1,18 +1,7 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
-// import { Post } from "@prisma/client"
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,13 +13,11 @@ import {
 // import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
 import QuestionEdit from "./question-edit";
+import { QuestionType } from "@/types";
+import QuestionDelete from "./question-delete";
 
-export function CardOperations() {
+export function CardOperations({ question }: { question: QuestionType }) {
   //! LOGIC WILL BE DISCUSSED LATER
-  // const router = useRouter();
-  const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
-  // const [isDeleteLoading, setIsDeleteLoading] = React.useState<boolean>(false);
-
   return (
     <>
       <DropdownMenu>
@@ -39,58 +26,10 @@ export function CardOperations() {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <QuestionEdit />
-          <DropdownMenuItem>
-            {/* <Link href={`/editor/${post.id}`} className="flex w-full"> */}
-            <Link href="#" className="flex w-full">
-              Edit
-            </Link>
-          </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            className="bg-red-500 text-white cursor-pointer"
-            onSelect={() => setShowDeleteAlert(true)}
-          >
-            Delete
-          </DropdownMenuItem>
+          <QuestionDelete />
         </DropdownMenuContent>
       </DropdownMenu>
-      <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              Are you sure you want to delete this snippet?
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              This action cannot be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              // onClick={async (event) => {
-              //   event.preventDefault();
-              //   setIsDeleteLoading(true);
-
-              //   const deleted = await deletePost(post.id);
-
-              //   if (deleted) {
-              //     setIsDeleteLoading(false);
-              //     setShowDeleteAlert(false);
-              //     router.refresh();
-              //   }
-              // }}
-              className="bg-red-600 focus:ring-red-600"
-            >
-              {/* {isDeleteLoading ? (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              ) : ( */}
-              <Icons.trash className="mr-2 h-4 w-4" />
-              {/* )} */}
-              <span>Delete</span>
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </>
   );
 }
