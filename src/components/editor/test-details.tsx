@@ -1,4 +1,4 @@
-import { formatDate } from "@/lib/utils";
+import { formatDate, toTitleCase } from "@/lib/utils";
 import { Button } from "../ui/button";
 
 type TestDetailsProps = {
@@ -21,7 +21,7 @@ export default function TestDetails({
         <Button>Fetch Latest Changes</Button>
       </div>
       <h3 className=" font-bold">
-        Category: <span className="font-normal">{category}</span>{" "}
+        Category: <span className="font-normal">{toTitleCase(category)}</span>{" "}
       </h3>
       <p>
         Last changed by <span className="font-bold">{lastChangedBy}</span> on{" "}
