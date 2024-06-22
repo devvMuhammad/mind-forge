@@ -1,7 +1,14 @@
+"use server";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
-export async function deleteQuestion(questionId: number, testId: string) {
+export async function deleteQuestion({
+  questionId,
+  testId,
+}: {
+  questionId: number;
+  testId: string;
+}) {
   const result = await prisma.$transaction([
     prisma.questions.delete({
       where: { id: questionId },

@@ -12,9 +12,25 @@ import {
 
 import React from "react";
 import { Icons } from "./icons";
+import { useQuestionCardContext } from "@/contexts/question-card-context";
+import { useMutation } from "@tanstack/react-query";
+import { deleteQuestion } from "@/app/actions/delete-question";
 
 export default function QuestionDelete() {
+  const {
+    testId,
+    question: { id: questionId },
+  } = useQuestionCardContext();
   const [showDeleteAlert, setShowDeleteAlert] = React.useState<boolean>(false);
+
+  const { isPending, mutate } = useMutation({
+    mutationFn: deleteQuestion,
+    onSuccess: () => {
+      setShowDeleteAlert(false);
+    },
+    onError: (err) => console.log(err),
+  });
+
   return (
     <>
       <DropdownMenuItem
@@ -39,25 +55,14 @@ export default function QuestionDelete() {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              // onClick={async (event) => {
-              //   event.preventDefault();
-              //   setIsDeleteLoading(true);
-
-              //   const deleted = await deletePost(post.id);
-
-              //   if (deleted) {
-              //     setIsDeleteLoading(false);
-              //     setShowDeleteAlert(false);
-              //     router.refresh();
-              //   }
-              // }}
+              onClick={(e) => {
+                e.preventDefault();
+                mutate({ testId, questionId: questionId as number });
+              }}
               className="bg-red-600 focus:ring-red-600"
+              disabled={isPending}
             >
-              {/* {isDeleteLoading ? (
-                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-              ) : ( */}
               <Icons.trash className="mr-2 h-4 w-4" />
-              {/* )} */}
               <span>Delete</span>
             </AlertDialogAction>
           </AlertDialogFooter>
