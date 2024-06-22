@@ -12,9 +12,10 @@ import {
 } from "@/components/ui/select";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ZodType, z } from "zod";
+import { z } from "zod";
 import { QuestionType } from "@/types";
-// import { Dispatch, SetStateAction } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { $Enums } from "@prisma/client";
 
 const EditQuestionSchema = z.object({
   statement: z
@@ -50,32 +51,91 @@ const EditQuestionSchema = z.object({
 
 type TEditQuestionSchema = z.infer<typeof EditQuestionSchema>;
 
-type AddQuestionsFormProps = {
-  addQuestion: (question: QuestionType) => void;
-  currentSubject: string | undefined;
+type QuestionToBeEditedType = QuestionType & {
+  questionId: number;
+  testId: string;
+  subject: $Enums.QuestionSubject;
 };
 
-export default function EditQuestionForm({}: // addQuestion,
-// currentSubject,
-AddQuestionsFormProps) {
-  // console.log("params in add questions page", testId);
+type QuestionFormProps =
+  | {
+      mode: "edit";
+      initialData: QuestionType;
+      actionToPerformWithData: (data: QuestionToBeEditedType) => Promise<any>;
+      actionPerformedOnSuccess: () => void;
+      actionPerformedOnError?: (err: any) => void;
+      subject: $Enums.QuestionSubject;
+      testId: string;
+      questionId: number;
+    }
+  | {
+      mode: "add";
+      initialData?: undefined;
+      actionToPerformWithData: (data: QuestionType) => Promise<any>;
+      actionPerformedOnSuccess?: undefined;
+      actionPerformedOnError?: undefined;
+      subject: string | undefined; // needed to ensure button is disabled if no subject is selected from the select element
+      testId?: undefined;
+      questionId?: undefined;
+    };
+
+function transformQuestionToSchemaForm(
+  question: QuestionType | undefined
+): TEditQuestionSchema | undefined {
+  if (question === undefined) return undefined;
+  return {
+    statement: question.statement,
+    option1: question.options[0],
+    option2: question.options[1],
+    option3: question.options[2],
+    option4: question.options[3],
+    answer: question.answer,
+    explanation: question.explanation,
+  };
+}
+
+export default function QuestionForm({
+  mode,
+  initialData,
+  actionToPerformWithData,
+  actionPerformedOnSuccess,
+  actionPerformedOnError,
+  subject,
+  testId,
+  questionId,
+  ...props
+}: QuestionFormProps) {
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
   } = useForm<TEditQuestionSchema>({
+    defaultValues: transformQuestionToSchemaForm(initialData),
     resolver: zodResolver(EditQuestionSchema),
   });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: actionToPerformWithData as (
+      data: QuestionToBeEditedType | QuestionType
+    ) => Promise<any>,
+    onSuccess: () => {
+      if (mode === "edit") actionPerformedOnSuccess();
+      console.log("Success");
+    },
+    onError: (err) => {
+      if (mode === "edit") actionPerformedOnError?.(err);
+      console.log(err);
+    },
+  });
+
   const onSubmit = (formData: TEditQuestionSchema) => {
-    // accumulate options into an array
     const transformedOptions = [
       formData.option1,
       formData.option2,
       formData.option3,
       formData.option4,
     ];
-    // remember that we obtain either 0,1,2,3 from the correct option field
     const transformedData = {
       statement: formData.statement,
       options: transformedOptions as QuestionType["options"],
@@ -83,12 +143,18 @@ AddQuestionsFormProps) {
       explanation: formData.explanation,
     } satisfies QuestionType;
 
-    console.log(transformedData);
+    // mutate(transformedData);
+    if (mode === "edit") {
+      mutate({ ...transformedData, testId, subject, questionId }); // this will call the edit-question server action
+    } else {
+      mutate(transformedData); // which will be a state update
+    }
   };
+
   const options = Array(4).fill("") as QuestionType["options"];
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4 py-4">
-      {/* @Question statement */}
       <div className="grid gap-2">
         <Label htmlFor="statement">Question Statement</Label>
         <Controller
@@ -104,12 +170,10 @@ AddQuestionsFormProps) {
             />
           )}
         />
-
         {errors.statement && (
           <p className="text-red-500">{errors.statement.message}</p>
         )}
       </div>
-      {/* @Question options */}
       {options.map((_, i) => (
         <div key={i} className="grid gap-2">
           <Label htmlFor={`option${i + 1}`}>Option {i + 1}</Label>
@@ -119,7 +183,7 @@ AddQuestionsFormProps) {
             render={({ field: { value, onBlur, onChange } }) => (
               <Textarea
                 id={`option${i + 1}`}
-                placeholder="Enter the first option"
+                placeholder={`Enter option ${i + 1}`}
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
@@ -133,16 +197,14 @@ AddQuestionsFormProps) {
           )}
         </div>
       ))}
-      {/* @Correct Option */}
       <div className="grid gap-2">
         <Label htmlFor="answer">Correct Option</Label>
-
         <Controller
           control={control}
           name="answer"
           render={({ field: { value, onChange } }) => (
             <Select
-              value={value === undefined ? undefined : `${value}`} // this code for showing the placeholder becuase it only shows when answer is undefined
+              value={value === undefined ? undefined : `${value}`}
               onValueChange={onChange}
             >
               <SelectTrigger id="answer">
@@ -161,7 +223,6 @@ AddQuestionsFormProps) {
           <p className="text-red-500">{errors.answer.message}</p>
         )}
       </div>
-      {/* @Explanation */}
       <div className="grid gap-2">
         <Label htmlFor="explanation">Explanation (Optional)</Label>
         <Controller
@@ -182,7 +243,12 @@ AddQuestionsFormProps) {
         )}
       </div>
       <div className="flex justify-end">
-        <Button type="submit">Submit</Button>
+        <Button
+          disabled={(mode === "edit" && isPending) || !subject}
+          type="submit"
+        >
+          {mode === "edit" && isPending ? "Submitting..." : "Submit"}
+        </Button>
       </div>
     </form>
   );

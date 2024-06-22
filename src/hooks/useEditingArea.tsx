@@ -15,7 +15,8 @@ export function useEditingArea(
     QuestionToBeAddedType[]
   >([]);
 
-  const addQuestion = (newQuestion: QuestionType) => {
+  // async is added here just so it can be passed to the useMutation hook because  the mutationFn requires a function that returns a promise
+  const addQuestion = async (newQuestion: QuestionType) => {
     setQuestionsToBeAdded([
       ...questionsToBeAdded,
       { testId, subject: currentSubject as any, ...newQuestion },
