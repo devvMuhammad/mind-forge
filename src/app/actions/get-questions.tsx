@@ -5,14 +5,14 @@ import { SubjectType } from "@/types";
 
 export async function getQuestions(testId: string) {
   const result = await prisma.$queryRaw`
-     SELECT 
+    SELECT 
       subject, 
       json_agg(json_build_object(
         'id', id,
         'statement', statement,
         'options', options,
         'answer', answer
-      )) AS questions
+      ) ORDER BY id) AS questions
     FROM 
       public.questions
     WHERE 
@@ -20,6 +20,5 @@ export async function getQuestions(testId: string) {
     GROUP BY 
       subject
   `;
-
   return result as SubjectType[];
 }
