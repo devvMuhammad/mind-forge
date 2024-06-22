@@ -28,7 +28,7 @@ export default async function TestEditorPage({
   });
   if (!testDetails) redirect("/admin/dashboard");
   const questions = await getQuestions(testId);
-  console.log("here are the questions", questions);
+  // console.log("here are the questions", questions[0].questions);
   return (
     <section>
       <TestDetails
@@ -45,11 +45,15 @@ export default async function TestEditorPage({
           + Add Questions Here
         </Link>
       </div>
-      <SubjectQuestions
-        testId={testId}
-        testCategory={testDetails.category}
-        mcqs={questions}
-      />
+      {questions.length > 0 ? (
+        <SubjectQuestions
+          testId={testId}
+          testCategory={testDetails.category}
+          mcqs={questions}
+        />
+      ) : (
+        <p>No Questions Found</p>
+      )}
     </section>
   );
 }
