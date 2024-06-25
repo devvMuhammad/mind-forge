@@ -21,7 +21,6 @@ type TestEditorPageData = {
 export default async function TestEditorPage({
   params: { testId },
 }: TestEditorPageProps) {
-  // prisma.questions.grou
   const testDetails = await prisma.tests.findUnique({
     where: { id: testId },
     include: { questions: true },

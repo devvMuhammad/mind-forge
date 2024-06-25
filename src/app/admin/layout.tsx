@@ -1,6 +1,7 @@
 import MainNav from "@/components/nav/main-nav";
 import UserProfile from "@/components/nav/user-profile";
 import { dashboardConfig } from "@/config/dashboard";
+import { SessionProvider } from "next-auth/react";
 
 export default function layout({ children }: { children: React.ReactNode }) {
   return (
@@ -8,13 +9,15 @@ export default function layout({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 ">
         <div className="container flex h-16 items-center justify-between py-2">
           <MainNav items={dashboardConfig.mainNav} />
-          <UserProfile
-            user={{
-              email: "muhammadaljoufi@gmail.com",
-              name: "Muhammad Amjad",
-              image: "",
-            }}
-          />
+          <SessionProvider>
+            <UserProfile
+              user={{
+                email: "muhammadaljoufi@gmail.com",
+                name: "Muhammad Amjad",
+                image: "",
+              }}
+            />
+          </SessionProvider>
         </div>
       </header>
       <div className="container pb-8">{children}</div>

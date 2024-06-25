@@ -6,9 +6,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { signOut, useSession } from "next-auth/react";
 import { UserAvatar } from "./user-avatar";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { auth } from "@/lib/auth";
 
 interface UserAccountNavProps {
   user: {
@@ -19,6 +21,9 @@ interface UserAccountNavProps {
 }
 
 export default function UserProfile({ user }: UserAccountNavProps) {
+  // const {} =  auth();
+  const session = useSession();
+  console.log("session status", session.status);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   return (
@@ -37,7 +42,7 @@ export default function UserProfile({ user }: UserAccountNavProps) {
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
             <p className="font-medium">Muhammad Amjad</p>
-            && (
+            {/* && ( */}
             <p className="w-[250px] truncate text-sm text-muted-foreground">
               king@gmail.com
             </p>
@@ -49,12 +54,14 @@ export default function UserProfile({ user }: UserAccountNavProps) {
           className="cursor-pointer rounded-[0.25rem] p-2"
           onSelect={(e) => {
             e.preventDefault();
-            startTransition(async () => {
+            startTransition(() => {
               // to be decided later
+              signOut({ redirect: false });
+              router.push("/login");
             });
           }}
         >
-          {isPending ? "Logging out..." : "Logout"}
+          {isPending ? "Logging out" : "Logout"}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

@@ -15,6 +15,9 @@ import {
 } from "@/components/ui/select";
 import { founders } from "@/config/founders";
 import PasswordInput from "@/components/ui/password-input";
+import { signIn } from "next-auth/react";
+import { useTransition } from "react";
+import { customSignIn } from "../actions/signIn";
 
 // @Validation schema using Zod
 const LoginSchema = z.object({
@@ -31,6 +34,7 @@ type TLoginSchema = z.infer<typeof LoginSchema>;
 // @Export
 export default function Login() {
   const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const {
     control,
     register,
@@ -40,7 +44,13 @@ export default function Login() {
     resolver: zodResolver(LoginSchema),
   });
 
-  const submitHandler = (data: TLoginSchema) => {};
+  const submitHandler = async (data: TLoginSchema) => {
+    // console.log(await signIn("credentials", data));
+    startTransition(async () => {
+      const response = await customSignIn(data);
+      console.log(response);
+    });
+  };
 
   return (
     <section className="flex flex-col items-center justify-center h-screen w-full">
@@ -104,11 +114,11 @@ export default function Login() {
 
           {/* ---- @Login Button */}
           <Button
-            // disabled={isPending}
+            disabled={isPending}
             size="lg"
             className="bg-primary text-white rounded-md"
           >
-            {/* {isPending ? "Loading" : "Login"} */}
+            {isPending ? "Loading" : "Login"}
           </Button>
         </form>
       </div>
