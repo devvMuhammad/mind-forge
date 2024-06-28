@@ -1,7 +1,7 @@
-import { Card, CardContent, CardFooter, CardTitle } from "./ui/card";
-import { TooltipProvider } from "./ui/tooltip";
+import { Card, CardContent, CardFooter, CardTitle } from "../ui/card";
+import { TooltipProvider } from "../ui/tooltip";
 import TestCardTooltips from "./test-card-tooltips";
-import { buttonVariants } from "./ui/button";
+import { buttonVariants } from "../ui/button";
 import Link from "next/link";
 import { toTitleCase } from "@/lib/utils";
 

@@ -1,6 +1,6 @@
 import { formatDate } from "@/lib/utils";
-import { Icons } from "./icons";
-import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
+import { Icons } from "../icons";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 type TestCardTooltipsProps = {
   createdAt: Date;

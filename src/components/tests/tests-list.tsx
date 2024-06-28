@@ -1,4 +1,4 @@
-import TestCard from "@/components/test-card";
+import TestCard from "@/components/tests/test-card";
 import { prisma } from "@/lib/prisma";
 
 async function getTests() {

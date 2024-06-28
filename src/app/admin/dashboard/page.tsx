@@ -1,6 +1,6 @@
 import CreateTestButton from "@/components/create-test";
-import TestsList from "@/components/tests-list";
-import TestsSkeleton from "@/components/tests-skeleton";
+import TestsList from "@/components/tests/tests-list";
+import TestsSkeleton from "@/components/tests/tests-skeleton";
 import { Suspense } from "react";
 
 export const metadata = {
