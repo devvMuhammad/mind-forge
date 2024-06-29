@@ -2,6 +2,7 @@ import { Icons } from "@/components/icons";
 import { dashboardConfig } from "@/config/dashboard";
 import { $Enums } from "@prisma/client";
 
+// @Dashboard Types
 export type DashboardNavMainItem = {
   title: string;
   href: string;
@@ -13,6 +14,7 @@ export type DashboardNavSidebarItem = {
   icon: keyof typeof Icons;
 };
 
+// @Test Types
 export type PossibleCategoryType = $Enums.TestCategory;
 export type PossibleSubjectType = $Enums.QuestionSubject;
 
@@ -48,4 +50,25 @@ export type ErrorResponse = {
 export type GoodResponse = {
   success: true;
   data: any;
+};
+
+// @Student Result Types (using a dummy version right now)
+type ResultType = {
+  id: string;
+  // test info
+  testId: string;
+  category: PossibleCategoryType;
+  // student info
+  studentName: string;
+  // result info
+  subjectScores: SubjectScoreType[];
+  marks: number;
+  total: number;
+  // wrongIndices //? will deal with this later on
+};
+
+type SubjectScoreType = {
+  subject: PossibleSubjectType;
+  score: number;
+  total: number;
 };

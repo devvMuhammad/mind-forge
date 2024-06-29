@@ -1,7 +1,9 @@
+import ResultsTable from "@/components/results-table";
+
 export const metadata = {
-  title: "Impressions",
+  title: "Students",
 };
 
-export default function page() {
-  return <h1>Impressions</h1>;
+export default function Page() {
+  return <ResultsTable />;
 }
