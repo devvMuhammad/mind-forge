@@ -13,7 +13,7 @@ export default function Page() {
         description="View Students' Results here in form of a table"
         containsButton={false}
       />
-      <ResultsTable />;
+      <ResultsTable />
     </>
   );
 }

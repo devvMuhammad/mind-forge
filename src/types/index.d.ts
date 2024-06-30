@@ -56,7 +56,8 @@ export type GoodResponse = {
 type ResultType = {
   id: string;
   // test info
-  testId: string;
+  testId: string; //title of the string
+  test: string; // title of the string
   category: PossibleCategoryType;
   // student info
   studentName: string;
@@ -64,6 +65,7 @@ type ResultType = {
   subjectScores: SubjectScoreType[];
   marks: number;
   total: number;
+  createdAt: Date;
   // wrongIndices //? will deal with this later on
 };
 

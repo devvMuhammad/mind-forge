@@ -5,11 +5,14 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function formatDate(date: Date) {
-  return date.toLocaleString("en-US", {
-    dateStyle: "long",
-    timeStyle: "short",
-  });
+export function formatDate(date: Date, options?: Intl.DateTimeFormatOptions) {
+  return date.toLocaleString(
+    "en-US",
+    options || {
+      dateStyle: "long",
+      timeStyle: "short",
+    }
+  );
 }
 
 const specialCases: Record<string, string> = {
