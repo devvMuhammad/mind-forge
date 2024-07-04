@@ -23,7 +23,7 @@ interface UserAccountNavProps {
 export default function UserProfile({ user }: UserAccountNavProps) {
   // const {} =  auth();
   const session = useSession();
-  console.log("session status", session.status);
+  // console.log("session status", session.status);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   return (
