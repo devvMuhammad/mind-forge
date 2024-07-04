@@ -22,14 +22,14 @@ export const dashboardConfig = {
       icon: "code",
     },
     {
-      title: "Students",
-      href: "/admin/dashboard/students",
-      icon: "rocket",
-    },
-    {
       title: "Results",
       href: "/admin/dashboard/results",
-      icon: "settings",
+      icon: "result",
+    },
+    {
+      title: "Registrations",
+      href: "/admin/dashboard/registration",
+      icon: "registration",
     },
   ],
 } satisfies {

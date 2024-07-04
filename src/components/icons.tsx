@@ -13,11 +13,12 @@ import {
   Trash,
   X,
   Edit,
+  AlignEndHorizontal,
+  CircleDollarSign,
 } from "lucide-react";
 
 export const Icons = {
   code: Code,
-  rocket: Rocket,
   settings: Settings,
   add: Plus,
   ellipsis: EllipsisVertical,
@@ -30,4 +31,6 @@ export const Icons = {
   tick: Check,
   cross: X,
   edit: Edit,
+  result: AlignEndHorizontal,
+  registration: CircleDollarSign,
 };
