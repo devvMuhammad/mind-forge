@@ -1,10 +1,13 @@
 "use client";
-import { ResultType, SubjectScoreType } from "@/types";
+import { PossibleCategoryType, ResultType, SubjectScoreType } from "@/types";
 import {
   ColumnDef,
+  ColumnFilter,
   ColumnSort,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
@@ -31,7 +34,8 @@ import { Input } from "./ui/input";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import { Icons } from "./icons";
 import { Button } from "./ui/button";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useDebounce } from "@/hooks/useDebounce";
 
 const DummyData: ResultType[] = [
   {
@@ -85,6 +89,23 @@ const DummyData: ResultType[] = [
     total: 200,
     createdAt: new Date(2024, 12, 4),
   },
+  {
+    id: "4",
+    test: "Pre medical peeps",
+    testId: "d",
+    category: "medical",
+    studentName: "Kakoo Male",
+    subjectScores: [
+      { subject: "mathematics", score: 50, total: 80 },
+      { subject: "physics", score: 40, total: 60 },
+      { subject: "chemistry", score: 10, total: 20 },
+      { subject: "english", score: 10, total: 10 },
+      { subject: "iq", score: 6, total: 10 },
+    ],
+    marks: 175,
+    total: 200,
+    createdAt: new Date(2024, 12, 4),
+  },
 ];
 
 function RenderArrow(sortValue: boolean | "asc" | "desc") {
@@ -108,8 +129,43 @@ function ControlSort(
   setSorting([]);
 }
 
+type FilterableColumnTypes = "testId" | "category" | "studentName";
+function ControlFilter(
+  id: FilterableColumnTypes,
+  value: string,
+  setFilters: Dispatch<SetStateAction<ColumnFilter[]>>
+) {
+  // first filter is by category, then by test name and then by student name
+  switch (id) {
+    case "category":
+      setFilters((prev) => {
+        const newFilters = [...prev];
+        newFilters[0].value = value === "all" ? "" : value;
+        return newFilters;
+      });
+      break;
+    case "testId":
+      setFilters((prev) => {
+        const newFilters = [...prev];
+        newFilters[1].value = value === "all" ? "" : value;
+        return newFilters;
+      });
+      break;
+    case "studentName":
+      setFilters((prev) => {
+        const newFilters = [...prev];
+        newFilters[2].value = value.length > 0 ? value : "";
+        return newFilters;
+      });
+      break;
+    default:
+      throw new Error("Invalid filter id");
+  }
+}
+
 const columns: ColumnDef<ResultType>[] = [
   { accessorKey: "id", header: "ID", enableSorting: false },
+  { accessorKey: "testId", header: "Test ID", enableSorting: false },
   { accessorKey: "studentName", header: "Name", enableSorting: true },
   {
     accessorKey: "category",
@@ -183,44 +239,75 @@ const columns: ColumnDef<ResultType>[] = [
 
 export default function ResultsTable() {
   const [sorting, setSorting] = useState<ColumnSort[]>([]);
+  const [filters, setFilters] = useState<ColumnFilter[]>([
+    // keeping this default value so that during changing filters, we can just use the index
+    { id: "category", value: "" },
+    { id: "testId", value: "" },
+    { id: "studentName", value: "" },
+  ]);
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search);
 
   const table = useReactTable<ResultType>({
     data: DummyData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
     initialState: {
       columnVisibility: {
         test: false,
+        testId: false,
       },
     },
     state: {
       sorting,
+      columnFilters: filters,
+      //? to be decided later
+      // pagination:{
+      // pageSize: 10,
+      // }
     },
     onSortingChange: setSorting,
+    onColumnFiltersChange: setFilters,
   });
+
+  useEffect(() => {
+    ControlFilter("studentName", debouncedSearch.trim(), setFilters);
+  }, [debouncedSearch]);
+
+  // console.log(filters);
+
   return (
     <div className="flex flex-col gap-2">
       {/* @Table Operations */}
       <div className="pl-1 pr-2 flex justify-between items-center">
         <div className="w-full flex justify-between items-center">
+          {/* @Filter by student Name */}
           <Input
             placeholder="Filter Names"
             // value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-            // onChange={(event) =>
-            //   table.getColumn("email")?.setFilterValue(event.target.value)
-            // }
+            value={search}
+            onChange={(event) => {
+              // table.getColumn("email")?.setFilterValue(event.target.value);
+              setSearch(event.target.value);
+            }}
             className="max-w-sm"
           />
           <div className="flex gap-4">
             {/* @Filter by Test Name (ID in actual) */}
-            <Select defaultValue="a">
+            <Select
+              defaultValue="all"
+              onValueChange={(val) => ControlFilter("testId", val, setFilters)}
+            >
               <SelectTrigger className="min-w-[125px] max-w-[250px]">
                 <SelectValue placeholder="Select a test" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Tests</SelectLabel>
+                  <SelectItem value="all">All</SelectItem>
                   <SelectItem value="a">Test A</SelectItem>
                   <SelectItem value="b">Test B</SelectItem>
                   <SelectItem value="c">Test C</SelectItem>
@@ -230,7 +317,12 @@ export default function ResultsTable() {
               </SelectContent>
             </Select>
             {/* @Filter by Category */}
-            <Select defaultValue="all">
+            <Select
+              defaultValue="all"
+              onValueChange={(val) =>
+                ControlFilter("category", val, setFilters)
+              }
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
@@ -263,8 +355,8 @@ export default function ResultsTable() {
                         header.column.getCanSort() ? "cursor-pointer" : ""
                       }
                       key={header.id}
-                      // if sortable, add onClick event
                       onClick={() => {
+                        // if sortable, then perform the function
                         if (!header.column.getCanSort()) return;
                         ControlSort(
                           setSorting,
@@ -317,6 +409,47 @@ export default function ResultsTable() {
             )}
           </TableBody>
         </Table>
+      </div>
+      {/* @Pagination */}
+      <div className="w-full flex items-center justify-between space-x-2 p-4">
+        <p className="text-sm">
+          Page {table.getState().pagination.pageIndex + 1} of{" "}
+          {table.getPageCount()}
+        </p>
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.firstPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            {"<<"}
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            Next
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => table.lastPage()}
+            disabled={!table.getCanNextPage()}
+          >
+            {">>"}
+          </Button>
+        </div>
       </div>
     </div>
   );
