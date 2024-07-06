@@ -1,50 +1,128 @@
-## MIND FORGE
+# Turborepo starter with shadcn/ui
 
-A platform aimed to ease the preparation process for students preparing for Entry Test
+![Static Badge](https://img.shields.io/badge/shadcn%2Fui-0.8.0-blue?link=https%3A%2F%2Fgithub.com%2Fshadcn%2Fui)
 
-## TECH STACK
+This is Turborepo starter with shadcn/ui pre-configured.
 
-- Frontend: TypeScript, NextJS, TailwindCSS
-- UI Library: ShadcnUI
-- Database: Supabase
-- Authentication and Authorization: Supabase Auth (@supabase/ssr)
-- More things will be revealed soon
+> [!NOTE]
+> This example uses `npm` as package manager.
 
-## NOTE
+[pnpm version](https://github.com/dan5py/turborepo-shadcn-ui)
 
-This is an open source project. If you want to contribute to it, let me know and let's start working together to make this platform better for everyone.
+## Using this example
 
-## Getting Started
+Clone the repository:
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```sh
+git clone https://github.com/dan5py/turborepo-shadcn-ui.git --branch npm
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Install dependencies:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+cd turborepo-shadcn-ui
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Add ui components
 
-## Learn More
+Use the pre-made script:
 
-To learn more about Next.js, take a look at the following resources:
+```sh
+npm run ui:add <component-name> -- <options>
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+> This works just like the add command in the `shadcn/ui` CLI.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Add a new app
 
-## Deploy on Vercel
+Turborepo offer a simple command to add a new app:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```sh
+npx turbo gen workspace --name <app-name>
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This will create a new empty app in the `apps` directory.
+
+If you want, you can copy an existing app with:
+
+```sh
+npx turbo gen workspace --name <app-name> --copy
+```
+
+> [!NOTE]
+> Remember to run `npm install` after copying an app.
+
+## What's inside?
+
+This Turborepo includes the following packages/apps:
+
+### Apps and Packages
+
+- `docs`: a [Next.js](https://nextjs.org/) app
+- `web`: another [Next.js](https://nextjs.org/) app
+- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications (🚀 powered by **shadcn/ui**)
+- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
+- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+
+Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+
+### Utilities
+
+This Turborepo has some additional tools already setup for you:
+
+- [TypeScript](https://www.typescriptlang.org/) for static type checking
+- [ESLint](https://eslint.org/) for code linting
+- [Prettier](https://prettier.io) for code formatting
+
+### Build
+
+To build all apps and packages, run the following command:
+
+```sh
+cd turborepo-shadcn-ui
+npm run build
+```
+
+### Develop
+
+To develop all apps and packages, run the following command:
+
+```sh
+cd turborepo-shadcn-ui
+npm run dev
+```
+
+### Remote Caching
+
+Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+
+By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+
+```
+cd turborepo-shadcn-ui
+npx turbo login
+```
+
+This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+
+Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+
+```sh
+npx turbo link
+```
+
+## Useful Links
+
+Learn more about the power of Turborepo:
+
+- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
+- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
+- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
+- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
+- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
+- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+
+Learn more about shadcn/ui:
+
+- [Documentation](https://ui.shadcn.com/docs)

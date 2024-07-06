@@ -1,0 +1,30 @@
+{
+  "name": "@repo/utils",
+  "version": "0.1.1",
+  "sideEffects": false,
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./cn": "./src/cn.ts"
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^2.0.0"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "tsup": "^6.0.1",
+    "typescript": "^5.2.2"
+  }
+}
