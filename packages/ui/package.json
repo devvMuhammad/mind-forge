@@ -29,6 +29,7 @@
     "@radix-ui/react-popover": "^1.1.1",
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
+    "@radix-ui/react-toast": "^1.2.1",
     "@radix-ui/react-tooltip": "^1.1.2",
     "@repo/utils": "*",
     "class-variance-authority": "^0.7.0",
@@ -41,6 +42,9 @@
     "./globals.css": "./src/globals.css",
     "./postcss.config": "./postcss.config.mjs",
     "./tailwind.config": "./tailwind.config.ts",
-    "./components/*": "./src/components/*.tsx"
+    "./components/*": [
+      "./src/components/*.tsx",
+      "./src/components/*.ts"
+    ]
   }
 }
