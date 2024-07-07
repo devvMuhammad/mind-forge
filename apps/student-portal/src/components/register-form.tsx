@@ -1,21 +1,53 @@
 "use client";
 
-import { Button } from "@repo/ui/components/ui/button";
+import { Button, buttonVariants } from "@repo/ui/components/ui/button";
 import { Input } from "@repo/ui/components/ui/input";
 import { Label } from "@repo/ui/components/ui/label";
+import { useToast } from "@repo/ui/components/ui/use-toast";
+import Image from "next/image";
 import { SVGProps, useState } from "react";
-import { useDropzone } from "react-dropzone";
+import { FileRejection, useDropzone } from "react-dropzone";
+
+interface ScreenshotType extends File {
+  preview: string;
+}
 
 export default function RegisterForm() {
-  const [screenshot, setScreenshot] = useState<File | undefined>();
-  function onDrop(acceptedFiles: File[]) {
-    console.log(acceptedFiles);
+  const { toast } = useToast();
+  const [screenshot, setScreenshot] = useState<ScreenshotType | undefined>();
+  function onDrop(
+    acceptedFiles: File[],
+    fileRejections: FileRejection[],
+    // event: DropEvent,
+  ) {
+    if (fileRejections.length > 0) {
+      if (fileRejections[0].errors[0].code === "file-invalid-type") {
+        toast({
+          title: "Invalid File Type",
+          description: "Please upload a valid image file",
+          variant: "destructive",
+        });
+      }
+      return;
+    }
+    const file = acceptedFiles[0];
+    const preview = URL.createObjectURL(file);
+    setScreenshot({ ...file, preview });
   }
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    maxFiles: 1,
+    accept: {
+      "image/*": [".jpeg", ".png", ".jpg", ".webp"],
+    },
+  });
   return (
     // set width styling later
-    <form className="flex flex-col gap-3 p-8 mx-auto w-1/2 border border-solid border-muted-foreground rounded-xl">
+    <form
+      onSubmit={(e) => e.preventDefault()}
+      className="flex flex-col gap-3 p-8 mx-auto w-1/2 border border-solid border-muted-foreground rounded-xl"
+    >
       <h1 className="text-center text-xl font-bold mb-4">Register Form</h1>
       <div className="space-y-1">
         <Label className="sm:text-base">Name</Label>
@@ -37,29 +69,43 @@ export default function RegisterForm() {
       <div className="space-y-1">
         <Label className="sm:text-base">Screenshot of Transaction</Label>
         {/* @File Upload Component */}
-        <div
-          {...getRootProps({
-            className:
-              "border-2 border-solid border-[#0000005C] rounded-xl p-8",
-          })}
-        >
-          <input {...getInputProps()} />
-          {isDragActive ? (
-            <p>Drop the files here ...</p>
-          ) : (
+        {!screenshot ? (
+          <div
+            {...getRootProps({
+              className:
+                "border-2 border-solid border-[#0000005C] rounded-xl p-8",
+            })}
+          >
+            <input {...getInputProps()} />
             <div className="flex gap-2 flex-col justify-center items-center text-[#0000005C]">
               <FileUploadIcon />
-              <h1 className="text-xl">Drag Files to Upload</h1>
+              <h1 className="text-xl text-balance">Drag Files to Upload</h1>
               <p>OR</p>
-              <Button>Browse Files</Button>
-
-              <p className="mt-2">
-                Supported File Type:{" "}
-                <span className="text-black">PNG, JPG, JPEG, WEBP</span>
-              </p>
+              <Button variant="outline">Browse Files</Button>
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="space-y-1">
+            <p className="text-muted-foreground">Preview</p>
+            <Image
+              src={screenshot?.preview}
+              alt="screenshot"
+              width={300}
+              height={300}
+              onLoad={() => {
+                URL.revokeObjectURL(screenshot?.preview);
+              }}
+            />
+            <div {...getRootProps()}>
+              <input id="reupload" hidden {...getInputProps()} />
+              <Label
+                className={`cursor-pointer mt-2 ${buttonVariants({ size: "sm", variant: "outline" })}`}
+              >
+                Reupload
+              </Label>
+            </div>
+          </div>
+        )}
       </div>
       <div className="flex justify-end">
         <Button>Submit</Button>
