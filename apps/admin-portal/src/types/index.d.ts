@@ -1,6 +1,7 @@
 import { Icons } from "@/components/icons";
 import { dashboardConfig } from "@/config/dashboard";
 import { $Enums } from "@prisma/client";
+import { Database } from "./supabase";
 
 // @Dashboard Types
 export type DashboardNavMainItem = {
@@ -15,8 +16,9 @@ export type DashboardNavSidebarItem = {
 };
 
 // @Test Types
-export type PossibleCategoryType = $Enums.TestCategory;
-export type PossibleSubjectType = $Enums.QuestionSubject;
+export type PossibleCategoryType = Database["public"]["Enums"]["TestCategory"];
+export type PossibleSubjectType =
+  Database["public"]["Enums"]["QuestionSubject"];
 
 export type QuestionType = {
   id?: number;

@@ -15,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@repo/ui/components/ui/button";
 import { useMutation } from "@tanstack/react-query";
 import { createTest } from "@/app/actions/create-test";
+import { useUserContext } from "@/contexts/user-context";
 
 const createTestSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -23,6 +24,11 @@ const createTestSchema = z.object({
 type TCreateTestSchema = z.infer<typeof createTestSchema>;
 
 export default function CreateTestForm() {
+  const {
+    user: { name: currentFounderName },
+  } = useUserContext(); // accessing the name
+  console.log(currentFounderName, "shit");
+
   const { handleSubmit, control, register, reset } = useForm<TCreateTestSchema>(
     {
       resolver: zodResolver(createTestSchema),
@@ -32,7 +38,7 @@ export default function CreateTestForm() {
   const { isPending, mutate } = useMutation({
     mutationFn: createTest,
     onSuccess: (data) => {
-      reset();
+      reset(); // reset the form
       console.log(data.data);
     },
     onError: (error) => {
@@ -44,7 +50,7 @@ export default function CreateTestForm() {
     mutate({
       category: formData.category,
       title: formData.title,
-      lastChangedBy: "Jawad Bambari", // fetch from session
+      lastChangedBy: currentFounderName, // fetch from session
     });
   }
   return (

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@repo/ui/globals.css";
+import ReactQueryProvider from "@/lib/react-query-provider";
+import { UserContextProvider } from "@/contexts/user-context";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,7 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <UserContextProvider>
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </UserContextProvider>
+      </body>
     </html>
   );
 }

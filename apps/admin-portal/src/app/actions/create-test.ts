@@ -1,32 +1,28 @@
 "use server";
-
-import { PossibleCategoryType, QuestionType, TestType } from "@/types";
-import { prisma } from "@/lib/prisma";
+import { PossibleCategoryType } from "@/types";
 import { revalidatePath } from "next/cache";
-import { Prisma, QuestionSubject } from "@prisma/client";
-import { DefaultArgs } from "@prisma/client/runtime/library";
+import { createClient } from "@/lib/supabase/server";
 
 type ActionProps = {
   category: PossibleCategoryType;
   title: string;
   lastChangedBy: string;
 };
-// type a = Prisma.TestsCreateArgs<DefaultArgs>;
 
 export async function createTest({
   category,
   title,
   lastChangedBy,
 }: ActionProps) {
-  // try {
-  const data = await prisma.tests.create({
-    data: {
-      category,
-      title,
-      lastChangedBy,
-      attempts: 0,
-    },
+  const supabase = createClient();
+  const data = await supabase.from("tests").insert({
+    category,
+    title,
+    attempts: 0,
+    last_changed: new Date().toISOString(),
+    last_changed_by: lastChangedBy,
   });
+
   revalidatePath("/admin/dashboard");
   return { success: true, data };
 }

@@ -4,7 +4,8 @@
   "sideEffects": false,
   "types": "./dist/index.d.ts",
   "exports": {
-    "./cn": "./src/cn.ts"
+    "./cn": "./src/cn.ts",
+    "./date": "./src/date.ts"
   },
   "license": "MIT",
   "publishConfig": {
