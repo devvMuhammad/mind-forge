@@ -9,6 +9,7 @@ import TestCardTooltips from "./test-card-tooltips";
 import { buttonVariants } from "@repo/ui/components/ui/button";
 import Link from "next/link";
 import { toTitleCase } from "@/lib/utils";
+import { convertToPKT } from "@repo/utils/date";
 
 type TestCardProps = {
   title: string;
@@ -51,9 +52,9 @@ export default function TestCard({
       <CardFooter className="border-t p-4">
         <TooltipProvider delayDuration={0}>
           <TestCardTooltips
-            createdAt={createdAt}
+            createdAt={convertToPKT(createdAt)}
             attempts={attempts}
-            lastChanged={lastChanged}
+            lastChanged={convertToPKT(lastChanged)}
           />
         </TooltipProvider>
       </CardFooter>
