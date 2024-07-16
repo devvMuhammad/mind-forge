@@ -1,10 +1,8 @@
 import SubjectQuestions from "@/components/editor/subject-questions";
 import TestDetails from "@/components/editor/test-details";
 import { QuestionType, SubjectType, TestType } from "@/types";
-// import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
-import { getQuestions } from "@/app/actions/get-questions";
-import { Button, buttonVariants } from "@repo/ui/components/ui/button";
+import { buttonVariants } from "@repo/ui/components/ui/button";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/supabase";
