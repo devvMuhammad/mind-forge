@@ -5,7 +5,8 @@
   "types": "./dist/index.d.ts",
   "exports": {
     "./cn": "./src/cn.ts",
-    "./date": "./src/date.ts"
+    "./date": "./src/date.ts",
+    "./file": "./src/file.ts"
   },
   "license": "MIT",
   "publishConfig": {
