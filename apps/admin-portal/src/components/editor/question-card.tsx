@@ -33,28 +33,32 @@ export default function QuestionCard({ index, question }: QuestionCardProps) {
           </p>
 
           <ul className="mt-2">
-            {question.options.map((option, index) => (
-              <li
-                key={index}
-                className="flex items-center gap-2  text-nowrap overflow-x-hidden "
-              >
-                <input
-                  type="radio"
-                  className="bg-red-500"
-                  disabled={!optionIsCorrect(index)}
-                  checked={optionIsCorrect(index)}
-                  readOnly
-                  // name={question.statement}
-                />
-                <p
-                  className={`${
-                    !optionIsCorrect(index) && "text-muted-foreground"
-                  }`}
+            {question.options.length > 0 ? (
+              question.options.map((option, index) => (
+                <li
+                  key={index}
+                  className="flex items-center gap-2  text-nowrap overflow-x-hidden "
                 >
-                  {option}
-                </p>
-              </li>
-            ))}
+                  <input
+                    type="radio"
+                    className="bg-red-500"
+                    disabled={!optionIsCorrect(index)}
+                    checked={optionIsCorrect(index)}
+                    readOnly
+                    // name={question.statement}
+                  />
+                  <p
+                    className={`${
+                      !optionIsCorrect(index) && "text-muted-foreground"
+                    }`}
+                  >
+                    {option}
+                  </p>
+                </li>
+              ))
+            ) : (
+              <pre>{JSON.stringify(question.options, null, 2)}</pre>
+            )}
           </ul>
         </div>
       </CardContent>
