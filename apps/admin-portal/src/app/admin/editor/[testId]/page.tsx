@@ -8,6 +8,7 @@ import { Button, buttonVariants } from "@repo/ui/components/ui/button";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/supabase";
+import { convertToPKT } from "@repo/utils/date";
 
 type TestEditorPageProps = {
   params: {
@@ -92,7 +93,7 @@ export default async function TestEditorPage({
         category={testDetails.category}
         mcqsLength={testDetails.questions.length}
         lastChangedBy={testDetails.last_changed_by}
-        lastChangedDate={new Date(testDetails.last_changed)}
+        lastChangedDate={convertToPKT(new Date(testDetails.last_changed))}
       />
       <div className="flex items-center gap-2">
         <Link
