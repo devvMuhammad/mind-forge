@@ -44,6 +44,12 @@ export type TestType = {
   lastChangedBy: string;
 };
 
+export type QuestionToBeEditedType = QuestionType & {
+  questionId: number;
+  test_id: string;
+  subject: PossibleSubjectType;
+};
+
 export type ErrorResponse = {
   success: false;
   message: string;
