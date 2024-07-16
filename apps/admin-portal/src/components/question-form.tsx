@@ -46,14 +46,14 @@ const EditQuestionSchema = z.object({
     })
     .min(0, { message: "Minimum index is 0" })
     .max(3, { message: "Maximum index is 3" }),
-  explanation: z.string().optional(),
+  explanation: z.string().nullable(),
 });
 
 type TEditQuestionSchema = z.infer<typeof EditQuestionSchema>;
 
 type QuestionToBeEditedType = QuestionType & {
   questionId: number;
-  testId: string;
+  test_id: string;
   subject: $Enums.QuestionSubject;
 };
 
@@ -103,10 +103,8 @@ export default function QuestionForm({
   subject,
   testId,
   questionId,
-  ...props
 }: QuestionFormProps) {
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },
@@ -145,7 +143,8 @@ export default function QuestionForm({
 
     // mutate(transformedData);
     if (mode === "edit") {
-      mutate({ ...transformedData, testId, subject, questionId }); // this will call the edit-question server action
+      // what you send to the server should be test_id, not testId
+      mutate({ ...transformedData, test_id: testId, subject, questionId }); // this will call the edit-question server action
     } else {
       mutate(transformedData); // which will be a state update
     }
@@ -184,7 +183,7 @@ export default function QuestionForm({
               <Textarea
                 id={`option${i + 1}`}
                 placeholder={`Enter option ${i + 1}`}
-                value={value}
+                value={value || ""}
                 onChange={onChange}
                 onBlur={onBlur}
               />
@@ -230,7 +229,7 @@ export default function QuestionForm({
           name="explanation"
           render={({ field: { value, onChange } }) => (
             <Textarea
-              value={value}
+              value={value || ""}
               onChange={onChange}
               id="explanation"
               placeholder="Enter the explanation for the correct answer"
