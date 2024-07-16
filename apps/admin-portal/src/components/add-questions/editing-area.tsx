@@ -20,11 +20,6 @@ import { Label } from "@repo/ui/components/ui/label";
 import { useEditingArea } from "@/hooks/useEditingArea";
 import QuestionForm from "../question-form";
 
-export type QuestionToBeAddedType = QuestionType & {
-  testId: string;
-  subject: $Enums.QuestionSubject;
-};
-
 export default function EditingArea({
   testId,
   currentCategory,

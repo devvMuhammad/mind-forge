@@ -1,36 +1,30 @@
 "use server";
 
+import { createClient } from "@/lib/supabase/server";
 import { QuestionType } from "@/types";
-import { prisma } from "@/lib/prisma";
 import { $Enums } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 type QuestionToBeEditedType = QuestionType & {
   questionId: number;
-  testId: string;
+  test_id: string;
   subject: $Enums.QuestionSubject;
 };
 
 export async function editQuestion(question: QuestionToBeEditedType) {
-  const result = await prisma.$transaction([
-    prisma.questions.update({
-      where: { id: question.questionId },
-      data: {
-        statement: question.statement,
-        options: question.options,
-        answer: question.answer,
-        explanation: question.explanation,
-        subject: question.subject,
-      },
-      // data: question,
-    }),
-    prisma.tests.update({
-      where: { id: question.testId },
-      data: { lastChanged: new Date() },
-    }),
-  ]);
-  console.log(result[0]);
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("questions")
+    .update({
+      statement: question.statement,
+      answer: question.answer,
+      options: question.options,
+      explanation: question.explanation,
+    })
+    .eq("id", question.questionId);
+  if (error) return { error };
+
   revalidatePath("/admin/dashboard");
-  revalidatePath(`/admin/editor/${question.testId}`);
-  return result[0];
+  revalidatePath(`/admin/editor/${question.test_id}`);
+  return data;
 }

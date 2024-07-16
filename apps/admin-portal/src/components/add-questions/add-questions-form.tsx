@@ -81,7 +81,7 @@ export default function AddQuestionsForm({
       statement: formData.statement,
       options: transformedOptions as QuestionType["options"],
       answer: formData.answer,
-      explanation: formData.explanation,
+      explanation: formData.explanation || null,
     } satisfies QuestionType;
 
     addQuestion(transformedData);

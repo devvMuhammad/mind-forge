@@ -25,7 +25,9 @@ export default function QuestionDelete() {
 
   const { isPending, mutate } = useMutation({
     mutationFn: deleteQuestion,
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log(data);
+      if (data?.error) return;
       setShowDeleteAlert(false);
     },
     onError: (err) => console.log(err),

@@ -3,7 +3,7 @@ import { Button } from "@repo/ui/components/ui/button";
 import TemporaryQuestionCard from "./temporary-question-card";
 import { useMutation } from "@tanstack/react-query";
 import { addQuestions } from "@/app/actions/add-questions";
-import { QuestionToBeAddedType } from "./editing-area";
+import { QuestionToBeAddedType } from "@/hooks/useEditingArea";
 
 type QuestionsToAddProps = {
   questionsToBeAdded: QuestionToBeAddedType[];
@@ -20,6 +20,7 @@ export default function QuestionsToAdd({
     mutationFn: addQuestions,
     onSuccess: (data) => {
       console.log(data);
+      if (data?.error) throw new Error(data.error.message);
       emptyQuestions();
       // add toast later
     },
