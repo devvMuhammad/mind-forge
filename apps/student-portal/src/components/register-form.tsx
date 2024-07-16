@@ -5,18 +5,16 @@ import { Input } from "@repo/ui/components/ui/input";
 import { Label } from "@repo/ui/components/ui/label";
 import { useToast } from "@repo/ui/components/ui/use-toast";
 import { Icons } from "@repo/ui/components/icons";
-import { isValidObjectURL } from "@repo/utils/file";
-import Image from "next/image";
 import { FileRejection, useDropzone } from "react-dropzone";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { registerAction } from "@/actions/register";
+import Image from "next/image";
 import z from "zod";
+import { useMutation } from "@tanstack/react-query";
+import { useRef } from "react";
 
-interface ScreenshotType extends File {
-  preview: string;
-}
-
-const registerSchema = z.object({
+export const registerSchema = z.object({
   name: z
     .string({ invalid_type_error: "Name is required" })
     .min(1, { message: "Name is required" })
@@ -25,13 +23,13 @@ const registerSchema = z.object({
     .string({ invalid_type_error: "Email is required" })
     .email({ message: "Enter a Valid Email" }),
   file: z
-    .custom<ScreenshotType | undefined>()
-    .refine((val) => val !== undefined && isValidObjectURL(val.preview), {
+    .custom<File | undefined>()
+    .refine((val) => val !== undefined && val instanceof File, {
       message: "Screenshot is required",
     }),
 });
 
-type TRegisterSchema = z.infer<typeof registerSchema>;
+export type TRegisterSchema = z.infer<typeof registerSchema>;
 
 export default function RegisterForm() {
   const {
@@ -39,12 +37,12 @@ export default function RegisterForm() {
     setValue,
     handleSubmit,
     formState: { errors },
+    setError,
     watch,
   } = useForm<TRegisterSchema>({
     resolver: zodResolver(registerSchema),
   });
   const { toast } = useToast();
-  // const [screenshot, setScreenshot] = useState<ScreenshotType | undefined>();
 
   function onDrop(acceptedFiles: File[], fileRejections: FileRejection[]) {
     if (fileRejections.length > 0) {
@@ -71,8 +69,10 @@ export default function RegisterForm() {
       return;
     }
     const file = acceptedFiles[0];
-    const preview = URL.createObjectURL(file);
-    setValue("file", { ...file, preview });
+
+    previewRef.current = URL.createObjectURL(file);
+    setValue("file", file);
+    setError("file", { message: "" });
   }
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -84,14 +84,45 @@ export default function RegisterForm() {
     maxSize: 2 * 1024 * 1024,
   });
 
-  function submitHandler(data: TRegisterSchema) {
-    console.log(data);
-  }
+  const previewRef = useRef<string | null>();
   const screenshot = watch("file"); // use watch instead of getValues("file")
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: registerAction,
+    onSuccess: (data) => {
+      //? deal with this error thing later
+      if (!data.data || data.error) throw new Error(JSON.stringify(data.error));
+
+      toast({
+        title: "Success",
+        description: "Your registration has been submitted",
+        variant: "success",
+      });
+    },
+    onError: (err) => {
+      toast({
+        title: "Error",
+        description: err.message,
+        variant: "destructive",
+      });
+    },
+  });
   return (
     // set width styling later
     <form
-      onSubmit={handleSubmit(submitHandler, (err) => console.log(err))}
+      onSubmit={handleSubmit(
+        async (formData) => {
+          console.log("formdata", formData);
+          const { name, email, file } = formData;
+          const FormDataCustom = new FormData();
+          FormDataCustom.append("name", name);
+          FormDataCustom.append("email", email);
+          FormDataCustom.append("file", file as File);
+          // cuz server action doesnt accept file directly, so i had to create form data for it
+          mutate(FormDataCustom);
+        },
+        (err) => console.log(err),
+      )}
       className="flex flex-col gap-3 p-8 mx-auto w-[90%] sm:w-3/4 xl:w-1/2 rounded-xl"
     >
       <h1 className="text-2xl font-bold mb-4">Register Form</h1>
@@ -154,13 +185,13 @@ export default function RegisterForm() {
         ) : (
           <div className="space-y-3">
             <Image
-              src={screenshot?.preview}
+              src={previewRef.current as string}
               alt="screenshot"
               className="rounded-md"
               width={300}
               height={300}
               onLoad={() => {
-                URL.revokeObjectURL(screenshot?.preview);
+                URL.revokeObjectURL(previewRef.current as string);
               }}
             />
             <div className="flex gap-4 items-center">
@@ -191,7 +222,9 @@ export default function RegisterForm() {
         )}
       </div>
       <div className="flex justify-end">
-        <Button type="submit">Submit</Button>
+        <Button type="submit" disabled={isPending}>
+          {!isPending ? "Submit" : "Loading..."}
+        </Button>
       </div>
     </form>
   );
