@@ -22,9 +22,9 @@ export async function editQuestion(question: QuestionToBeEditedType) {
       explanation: question.explanation,
     })
     .eq("id", question.questionId);
-  if (error) return { error };
+  if (error) return { error, data: null };
 
   revalidatePath("/admin/dashboard");
   revalidatePath(`/admin/editor/${question.test_id}`);
-  return data;
+  return { data, error: null };
 }
