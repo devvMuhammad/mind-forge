@@ -10,28 +10,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerAction } from "@/actions/register";
 import Image from "next/image";
-import z from "zod";
 import { useMutation } from "@tanstack/react-query";
 import { useRef } from "react";
-
-export const registerSchema = z.object({
-  name: z
-    .string({ invalid_type_error: "Name is required" })
-    .min(1, { message: "Name is required" })
-    .max(100, { message: "Name should be less than 100 characters" }),
-  email: z
-    .string({ invalid_type_error: "Email is required" })
-    .email({ message: "Enter a Valid Email" }),
-  file: z
-    .custom<File | undefined>()
-    .refine((val) => val !== undefined && val instanceof File, {
-      message: "Screenshot is required",
-    }),
-});
-
-export type TRegisterSchema = z.infer<typeof registerSchema>;
+import { TRegisterSchema, registerSchema } from "@/lib/schema/register";
 
 export default function RegisterForm() {
+  const { toast } = useToast();
+
   const {
     register,
     setValue,
@@ -42,7 +27,6 @@ export default function RegisterForm() {
   } = useForm<TRegisterSchema>({
     resolver: zodResolver(registerSchema),
   });
-  const { toast } = useToast();
 
   function onDrop(acceptedFiles: File[], fileRejections: FileRejection[]) {
     if (fileRejections.length > 0) {
@@ -107,25 +91,26 @@ export default function RegisterForm() {
       });
     },
   });
+
+  async function submitHandler(formData: TRegisterSchema) {
+    console.log("formdata", formData);
+    const { name, email, file } = formData;
+    const FormDataCustom = new FormData();
+    FormDataCustom.append("name", name);
+    FormDataCustom.append("email", email);
+    FormDataCustom.append("file", file as File);
+    // cuz server action doesnt accept file directly, so i had to create form data for it
+    mutate(FormDataCustom);
+  }
+
   return (
     // set width styling later
     <form
-      onSubmit={handleSubmit(
-        async (formData) => {
-          console.log("formdata", formData);
-          const { name, email, file } = formData;
-          const FormDataCustom = new FormData();
-          FormDataCustom.append("name", name);
-          FormDataCustom.append("email", email);
-          FormDataCustom.append("file", file as File);
-          // cuz server action doesnt accept file directly, so i had to create form data for it
-          mutate(FormDataCustom);
-        },
-        (err) => console.log(err),
-      )}
+      onSubmit={handleSubmit(submitHandler, (err) => console.log(err))}
       className="flex flex-col gap-3 p-8 mx-auto w-[90%] sm:w-3/4 xl:w-1/2 rounded-xl"
     >
       <h1 className="text-2xl font-bold mb-4">Register Form</h1>
+      {/* @Name */}
       <div className="space-y-1">
         <Label className="sm:text-sm">
           Name <sup className="text-primary">*</sup>
@@ -140,6 +125,7 @@ export default function RegisterForm() {
           <div className="text-red-500 text-xs">{errors.name.message}</div>
         )}
       </div>
+      {/* @Email */}
       <div className="space-y-1">
         <Label className="sm:text-sm">
           Email <sup className="text-primary">*</sup>
@@ -154,7 +140,7 @@ export default function RegisterForm() {
           <div className="text-red-500 text-xs">{errors.email.message}</div>
         )}
       </div>
-
+      {/* @Screenshot Upload */}
       <div className="space-y-1">
         <Label className="sm:text-sm">
           Screenshot <sup className="text-primary">*</sup>
@@ -221,6 +207,7 @@ export default function RegisterForm() {
           <div className="text-red-500 text-xs">{errors.file.message}</div>
         )}
       </div>
+      {/* @Submit Button */}
       <div className="flex justify-end">
         <Button type="submit" disabled={isPending}>
           {!isPending ? "Submit" : "Loading..."}
