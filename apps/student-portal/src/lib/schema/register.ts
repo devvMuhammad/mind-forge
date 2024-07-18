@@ -1,13 +1,16 @@
+import { categories } from "@/config/categories";
 import { z } from "zod";
 
+const categoriesNames = categories.reduce((acc: string[], elm) => {
+  acc.push(elm.name);
+  return acc;
+}, []);
+
 export const registerSchema = z.object({
-  name: z
-    .string({ invalid_type_error: "Name is required" })
-    .min(1, { message: "Name is required" })
-    .max(100, { message: "Name should be less than 100 characters" }),
-  email: z
-    .string({ invalid_type_error: "Email is required" })
-    .email({ message: "Enter a Valid Email" }),
+  category: z.enum(categoriesNames as any, {
+    invalid_type_error: "Category is required",
+    required_error: "Category is required",
+  }),
   file: z
     .custom<File | undefined>()
     .refine((val) => val !== undefined && val instanceof File, {

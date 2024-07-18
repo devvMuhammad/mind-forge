@@ -3,22 +3,32 @@
 import { Button, buttonVariants } from "@repo/ui/components/ui/button";
 import { Input } from "@repo/ui/components/ui/input";
 import { Label } from "@repo/ui/components/ui/label";
+import {
+  Select,
+  SelectTrigger,
+  SelectItem,
+  SelectValue,
+  SelectContent,
+  SelectGroup,
+  SelectLabel,
+} from "@repo/ui/components/ui/select";
 import { useToast } from "@repo/ui/components/ui/use-toast";
 import { Icons } from "@repo/ui/components/icons";
 import { FileRejection, useDropzone } from "react-dropzone";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerAction } from "@/actions/register";
 import Image from "next/image";
 import { useMutation } from "@tanstack/react-query";
 import { useRef } from "react";
 import { TRegisterSchema, registerSchema } from "@/lib/schema/register";
+import { categories } from "@/config/categories";
 
 export default function RegisterForm() {
   const { toast } = useToast();
 
   const {
-    register,
+    control,
     setValue,
     handleSubmit,
     formState: { errors },
@@ -75,7 +85,7 @@ export default function RegisterForm() {
     mutationFn: registerAction,
     onSuccess: (data) => {
       //? deal with this error thing later
-      if (!data.data || data.error) throw new Error(JSON.stringify(data.error));
+      if (!data.data) throw new Error(JSON.stringify(data.error));
 
       toast({
         title: "Success",
@@ -94,10 +104,9 @@ export default function RegisterForm() {
 
   async function submitHandler(formData: TRegisterSchema) {
     console.log("formdata", formData);
-    const { name, email, file } = formData;
+    const { category, file } = formData;
     const FormDataCustom = new FormData();
-    FormDataCustom.append("name", name);
-    FormDataCustom.append("email", email);
+    FormDataCustom.append("category", category);
     FormDataCustom.append("file", file as File);
     // cuz server action doesnt accept file directly, so i had to create form data for it
     mutate(FormDataCustom);
@@ -107,39 +116,40 @@ export default function RegisterForm() {
     // set width styling later
     <form
       onSubmit={handleSubmit(submitHandler, (err) => console.log(err))}
-      className="flex flex-col gap-3 p-8 mx-auto w-[90%] sm:w-3/4 xl:w-1/2 rounded-xl"
+      className="flex flex-col border gap-3 p-8 mx-auto w-[90%] sm:w-3/4 xl:w-1/2 rounded-xl"
     >
       <h1 className="text-2xl font-bold mb-4">Register Form</h1>
-      {/* @Name */}
+
       <div className="space-y-1">
-        <Label className="sm:text-sm">
-          Name <sup className="text-primary">*</sup>
+        <Label htmlFor="category" className="sm:text-sm">
+          Category <sup className="text-primary">*</sup>
         </Label>
-        <Input
-          {...register("name")}
-          className="w-full md:max-w-[90%] xl:max-w-[50%] transition-all"
-          type="text"
-          placeholder="Muhammad Amjad"
+        <Controller
+          control={control}
+          name="category"
+          render={({ field: { onChange, value } }) => (
+            <Select value={value} onValueChange={onChange}>
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Select Category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectLabel>Categories</SelectLabel>
+                  {categories.map((cat) => (
+                    <SelectItem value={cat.name}>{cat.title}</SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
         />
-        {errors.name && (
-          <div className="text-red-500 text-xs">{errors.name.message}</div>
+        {errors.category && (
+          <div className="text-red-500 text-xs">
+            {errors.category.message?.toString()}
+          </div>
         )}
       </div>
-      {/* @Email */}
-      <div className="space-y-1">
-        <Label className="sm:text-sm">
-          Email <sup className="text-primary">*</sup>
-        </Label>
-        <Input
-          {...register("email")}
-          className="w-full md:max-w-[90%] xl:max-w-[50%] transition-all"
-          type="text"
-          placeholder="mindforge@alpha.com"
-        />
-        {errors.email && (
-          <div className="text-red-500 text-xs">{errors.email.message}</div>
-        )}
-      </div>
+
       {/* @Screenshot Upload */}
       <div className="space-y-1">
         <Label className="sm:text-sm">
