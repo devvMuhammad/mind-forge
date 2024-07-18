@@ -1,98 +1,72 @@
-"use client";
-import {
-  useReactTable,
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-} from "@tanstack/react-table";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@repo/ui/components/ui/table";
-import { useState } from "react";
+import RegistrationTable from "@/components/registration-table";
+import { createClient } from "@/lib/supabase/server";
+import Image from "next/image";
+import Images from "./images";
+import PageTitle from "@/components/page-title";
 
-type ResultType = {
-  id: string;
-  studentName: string;
-  marks: number;
-  total: number;
-  createdAt: string;
-};
-// dummy data
-const DummyData: ResultType[] = [
-  {
-    id: "1",
-    studentName: "Alpha Male",
-    marks: 95,
-    total: 200,
-    createdAt: new Date().toLocaleDateString(),
-  },
-  {
-    id: "2",
-    studentName: "Zaeben Male",
-    marks: 0,
-    total: 200,
-    createdAt: new Date().toLocaleDateString(),
-  },
-  {
-    id: "3",
-    studentName: "Sabun Male",
-    marks: 175,
-    total: 200,
-    createdAt: new Date().toLocaleDateString(),
-  },
-];
-// columns
-const columns: ColumnDef<ResultType>[] = [
-  { accessorKey: "id", header: "ID" },
-  { accessorKey: "studentName", header: "Name" },
-  { accessorKey: "marks", header: "Marks" },
-  { accessorKey: "total", header: "Total" },
-  { accessorKey: "createdAt", header: "Attempted At" },
-];
+const cdn =
+  "https://hgbzsceblfigpnzgrqcp.supabase.co/storage/v1/object/public/transaction_proof/";
 
-export default function ResultsTable() {
-  const table = useReactTable({
-    data: DummyData,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-  });
+export default async function Registration() {
+  const supabase = createClient();
+  const { data, error } = await supabase.from("registrations").select("*");
+
+  if (error) {
+    console.error(error);
+    throw new Error("Failed to fetch data");
+  }
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        {/* Render columns */}
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext(),
-                  )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        {/* Actual Table Data */}
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+    <>
+      <PageTitle
+        heading="Registrations"
+        description="View Students' Registrations here in form of a table"
+        containsButton={false}
+      />
+      <RegistrationTable registrations={data} />
+
+      {/* <pre className="overflow-x-auto">{JSON.stringify(data, null, 2)}</pre>
+      {data.map((row) => (
+        <div key={row.id}>
+        <a href={cdn + row.screenshot_url}>{cdn + row.screenshot_url}</a>
+        <img src={cdn + row.screenshot_url} alt="image" />
+        </div>
+      ))} */}
+    </>
   );
 }
+
+//! STORING THIS FOR FUTURE PURPOSE (THIS IS INCASE I USE PRIVATE BUCKET IN FUTURE)
+/*
+- first, you need to get the list of the images and their names
+- generate signed urls using their names
+- use those signed urls as src for the images
+
+ const { data: bucketData, error: bucketError } = await supabase.storage
+    .from("transaction_proof")
+    .list("", {
+      limit: 100,
+      offset: 0,
+      sortBy: { column: "name", order: "asc" },
+    });
+
+  if (bucketError) {
+    console.error(bucketError);
+    throw new Error("Failed to fetch data");
+  }
+
+  const { data: signedUrlData, error: signedUrlError } = await supabase.storage
+    .from("transaction_proof")
+    .createSignedUrls(
+      bucketData.reduce((acc: string[], elm) => {
+        acc.push(elm.name);
+        return acc;
+      }, []),
+      60 * 60 * 24,
+    );
+
+  if (signedUrlError) {
+    console.error(signedUrlError);
+    throw new Error("Failed to fetch data");
+  }
+ */

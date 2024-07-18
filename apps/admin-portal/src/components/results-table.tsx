@@ -27,8 +27,8 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@repo/ui/components/ui/select"
-import { formatDate, toTitleCase } from "@/lib/utils"
+} from "@repo/ui/components/ui/select";
+import { formatDate, toTitleCase } from "@/lib/utils";
 import { testsConfig } from "@/config/tests";
 import { Input } from "@repo/ui/components/ui/input";
 import {
