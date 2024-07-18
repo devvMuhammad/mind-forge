@@ -39,6 +39,7 @@ import Title from "@/components/title";
 import Seperator from "@/components/separator";
 import SocialLogins from "@/components/social-logins";
 import { Icons } from "@repo/ui/components/icons";
+import { loginSSO } from "@/actions/auth";
 
 // @Validation schema using Zod
 const LoginSchema = z.object({
@@ -56,33 +57,7 @@ export default function Login() {
   const { register, handleSubmit } = useForm<TLoginSchema>({
     resolver: zodResolver(LoginSchema),
   });
-  function submitHandler(formData: TLoginSchema) {
-    console.log(formData);
-    // startTransition(async () => {
-    //   try {
-    //     const response = await axios.post(`/api/auth/login`, {
-    //       email: formData.email,
-    //       password: formData.password,
-    //     });
-    //     if (!response.data.valid) throw new Error(response.data.message);
-    //     toast({
-    //       variant: "default",
-    //       title: "Login Successful",
-    //       description: "You have logged in sucessfully!",
-    //     });
-    //     router.replace("/"); // move to the main events page (as for now)
-    //     console.log(response);
-    //   } catch (err) {
-    //     console.log(err);
-    //     toast({
-    //       variant: "destructive",
-    //       title: "Uh oh! Something went wrong.",
-    //       description: (err as any)?.response.data.message,
-    //       action: <ToastAction altText="Try again">Try again</ToastAction>,
-    //     });
-    //   }
-    // });
-  }
+
   return (
     <div className="border-2 border-solid border-muted rounded-xl p-14 flex flex-col">
       {/* -- @Title */}
@@ -94,7 +69,12 @@ export default function Login() {
       {/* -- @Social Logins */}
       <div className="flex flex-col gap-4">
         <Button
-          // onClick={() => signIn("google", { callbackUrl: "/" })}
+          onClick={() => {
+            startTransition(async () => {
+              const response = await loginSSO();
+              console.log(response);
+            });
+          }}
           size="lg"
           className="grid grid-cols-[auto_1fr] text-left gap-4 bg-white hover:bg-black/5 text-gray-500 border-2 px-6 rounded-md"
         >
