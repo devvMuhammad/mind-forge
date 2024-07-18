@@ -1,6 +1,10 @@
+import { getSession } from "@/actions/auth";
 import RegisterForm from "@/components/register-form";
+import { redirect } from "next/navigation";
 
-export default function Register() {
+export default async function Register() {
+  const { data } = await getSession();
+  if (!data) redirect("/");
   return (
     <main>
       {/* @Update this later
@@ -15,6 +19,7 @@ export default function Register() {
 
       {/* @Register Form */}
       <RegisterForm />
+      <pre>{JSON.stringify(data.user, null, 2)}</pre>
     </main>
   );
 }
