@@ -25,31 +25,41 @@ export async function registerAction(formData: FormData) {
     },
   } = userData;
 
-  const { data: responseData, error: bucketError } = await supabase.storage
-    .from("transaction_proof")
-    .upload(
-      `${email}_${category}_${new Date().toISOString()}_proof.png`,
-      file as File,
-      {
-        contentType: "image/png",
-        upsert: true,
-      },
-    );
-
-  console.log("responseData", responseData);
-  console.log("bucket error", bucketError);
-
-  if (bucketError) return { error: bucketError, data: null };
+  const imageName = `${email}_${category}_${new Date().toISOString()}_proof.png`;
+  const imagePath = `transaction_proof/${imageName}`;
 
   const { data: insertData, error: insertError } = await supabase
     .from("registrations" as any)
-    .insert({ name, email, screenshot_url: responseData.path, category })
+    .insert({ name, email, screenshot_url: imageName, category })
     .single();
 
   console.log("insert error", insertError);
   console.log("insert data", insertData);
 
-  if (insertError) return { error: insertError, data: null };
+  // special error message for email unique constraint
+  if (
+    insertError?.message?.includes("registrations_email_key") &&
+    insertError.code === "23505"
+  ) {
+    return {
+      error:
+        "You have already have a pending registration. Please wait till that is resolved",
+      data: null,
+    };
+  }
+
+  if (insertError) return { error: insertError.message, data: null };
+
+  const { data: responseData, error: bucketError } = await supabase.storage
+    .from("transaction_proof")
+    .upload(imageName, file as File, {
+      contentType: "image/png",
+    });
+
+  console.log("responseData", responseData);
+  console.log("bucket error", bucketError);
+
+  if (bucketError) return { error: bucketError.message, data: null };
 
   return { error: null, data: { ...responseData } }; // also add the insert data later
 }

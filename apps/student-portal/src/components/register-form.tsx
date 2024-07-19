@@ -23,8 +23,10 @@ import { useMutation } from "@tanstack/react-query";
 import { useRef } from "react";
 import { TRegisterSchema, registerSchema } from "@/lib/schema/register";
 import { categories } from "@/config/categories";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
+  const router = useRouter();
   const { toast } = useToast();
 
   const {
@@ -34,6 +36,7 @@ export default function RegisterForm() {
     formState: { errors },
     setError,
     watch,
+    reset,
   } = useForm<TRegisterSchema>({
     resolver: zodResolver(registerSchema),
   });
@@ -85,17 +88,19 @@ export default function RegisterForm() {
     mutationFn: registerAction,
     onSuccess: (data) => {
       //? deal with this error thing later
-      if (!data.data) throw new Error(JSON.stringify(data.error));
+      if (!data.data) throw new Error(data.error);
 
       toast({
         title: "Success",
         description: "Your registration has been submitted",
         variant: "success",
       });
+      router.push("/success");
+      reset();
     },
     onError: (err) => {
       toast({
-        title: "Error",
+        title: "Something went wrong!",
         description: err.message,
         variant: "destructive",
       });
