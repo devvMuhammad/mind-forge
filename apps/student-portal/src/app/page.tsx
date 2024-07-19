@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Button } from "@repo/ui/components/ui/button";
 import { getSession, logout } from "@/actions/auth";
+import Pricing from "@/components/pricing";
 
 export default async function Page() {
   const { data, error } = await getSession();
@@ -14,6 +15,7 @@ export default async function Page() {
       </form>
       <Link href="/auth/login">Log in here</Link>
       <pre>{JSON.stringify(data || error, null, 2)}</pre>
+      <Pricing />
     </>
   );
 }
