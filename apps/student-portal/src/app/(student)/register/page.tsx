@@ -6,7 +6,7 @@ export default async function Register() {
   const { data } = await getSession();
   if (!data) redirect("/");
   return (
-    <main>
+    <main className="pt-24">
       {/* @Update this later
       <h1>Register for our Tests</h1>
       <h2>Here is the procedure</h2>
@@ -19,7 +19,7 @@ export default async function Register() {
 
       {/* @Register Form */}
       <RegisterForm />
-      <pre>{JSON.stringify(data.user, null, 2)}</pre>
+      {/* <pre>{JSON.stringify(data.user, null, 2)}</pre> */}
     </main>
   );
 }
