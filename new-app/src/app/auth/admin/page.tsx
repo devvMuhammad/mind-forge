@@ -56,6 +56,7 @@ export default function Login() {
         return;
       }
       // set the context
+
       setUser({
         name: user.user_metadata.name,
         email: user.email as string,

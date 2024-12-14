@@ -13,7 +13,7 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
       //! i customized it myself lol
-      return NextResponse.redirect(`${origin}/register`);
+      return NextResponse.redirect(`${origin}/student/dashboard`);
     }
   }
 

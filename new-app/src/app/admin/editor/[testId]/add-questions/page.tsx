@@ -1,42 +1,21 @@
-import { toTitleCase } from "@/lib/utils";
 import EditingArea from "@/components/add-questions/editing-area";
-import { subjectsForCategories, testsConfig } from "@/config/tests";
+import { testsConfig } from "@/config/tests";
 import { redirect } from "next/navigation";
-import { Label } from "@/components/ui/label";
-import { $Enums } from "@prisma/client";
 
 type AddQuestionsEditorProps = {
-  params: { testId: string };
-  searchParams: { category: string; subject: string };
+  params: Promise<{ testId: string }>;
+  searchParams: Promise<{ category: string; subject: string }>;
 };
 
-const validateSearchParams = ({
-  subject,
-  category,
-  testId,
-}: Pick<AddQuestionsEditorProps, "searchParams">["searchParams"] & {
-  testId: string;
-}) => {
-  if (
-    !category ||
-    !subject ||
-    testsConfig.categories.indexOf(category as any) === -1
-  ) {
-    if (
-      !subjectsForCategories[category as $Enums.TestCategory].includes(
-        subject as any,
-      )
-    ) {
-      redirect(`/admin/dashboard/${testId}`);
-    }
-  }
-};
-
-export default function page({
-  params: { testId },
-  searchParams: { category },
+export default async function page({
+  params,
+  searchParams,
 }: AddQuestionsEditorProps) {
+  const { testId } = await params;
+  const { category } = await searchParams;
+
   console.log({ category });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   if (!category || testsConfig.categories.indexOf(category as any) === -1) {
     redirect(`/admin/editor/${testId}`);
   }
@@ -45,10 +24,7 @@ export default function page({
   return (
     <section>
       <h1 className="text-2xl font-bold">Interface for Adding MCQs</h1>
-      <EditingArea
-        testId={testId}
-        currentCategory={category as $Enums.TestCategory}
-      />
+      <EditingArea testId={testId} currentCategory={category} />
     </section>
   );
 }

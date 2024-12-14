@@ -11,7 +11,7 @@ type QuestionToBeAddedType = QuestionType & {
 };
 
 export async function addQuestions(questions: QuestionToBeAddedType[]) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const testId = questions[0].test_id; // kisi aik se bhi utha lo
   const { data, error } = await supabase.from("questions").insert(questions);
   console.log({ data, error });

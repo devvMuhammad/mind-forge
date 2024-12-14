@@ -8,7 +8,7 @@ const cdn =
   "https://hgbzsceblfigpnzgrqcp.supabase.co/storage/v1/object/public/transaction_proof/";
 
 export default async function Registration() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase.from("registrations").select("*");
 
   if (error) {

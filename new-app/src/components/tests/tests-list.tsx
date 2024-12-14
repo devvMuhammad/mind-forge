@@ -2,7 +2,7 @@ import TestCard from "@/components/tests/test-card";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function TestsList() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const data = (await supabase.from("tests").select("*, questions(*)")).data;
 
   if (!data || data.length === 0)

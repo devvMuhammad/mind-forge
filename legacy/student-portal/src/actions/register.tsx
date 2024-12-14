@@ -8,7 +8,7 @@ export async function registerAction(formData: FormData) {
   const formEntries = formData.entries();
   const formDataObject = Object.fromEntries(formEntries);
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error, data } = registerSchema.safeParse(formDataObject);
   if (error) return { error: error.message, data: null };
 

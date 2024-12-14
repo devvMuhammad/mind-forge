@@ -24,7 +24,7 @@ type LoginResponse = {
   data: { user: User; session: Session };
 };
 export async function login(formData: TLoginSchema): Promise<LoginResponse> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
@@ -33,8 +33,9 @@ export async function login(formData: TLoginSchema): Promise<LoginResponse> {
     password: formData.password,
   };
 
-  const { error, data: responseData } =
-    await supabase.auth.signInWithPassword(data);
+  const { error, data: responseData } = await supabase.auth.signInWithPassword(
+    data
+  );
 
   console.log(error, "error during signup");
 
@@ -44,14 +45,14 @@ export async function login(formData: TLoginSchema): Promise<LoginResponse> {
       JSON.stringify({
         error: { ...error, message: error.message },
         data: null,
-      }),
+      })
     );
   }
   return { data: responseData, error: null };
 }
 
 export async function signup(formData: FormData) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
@@ -71,7 +72,7 @@ export async function signup(formData: FormData) {
 }
 
 export async function signOut() {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.auth.signOut();
 
   if (error) {
@@ -83,6 +84,6 @@ export async function signOut() {
 }
 
 export const getSession = cache(async () => {
-  const supabase = createClient();
+  const supabase = await createClient();
   return await supabase.auth.getUser();
 });

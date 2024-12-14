@@ -14,7 +14,7 @@ export async function createTest({
   title,
   lastChangedBy,
 }: ActionProps) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const data = await supabase.from("tests").insert({
     category,
     title,

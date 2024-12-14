@@ -35,7 +35,7 @@ function TransformDBQuestions(
       | "biology"
       | "computer"
       | "basic_maths";
-  }[],
+  }[]
 ): SubjectType[] {
   return questions.reduce((acc: SubjectType[], curr) => {
     const newQuestion = {
@@ -46,7 +46,7 @@ function TransformDBQuestions(
       statement: curr.statement,
     };
     const subjectIndex = acc.findIndex(
-      (subject) => subject.subject === curr.subject,
+      (subject) => subject.subject === curr.subject
     );
     if (subjectIndex === -1)
       acc.push({
@@ -62,7 +62,7 @@ function TransformDBQuestions(
 export default async function TestEditorPage({
   params: { testId },
 }: TestEditorPageProps) {
-  const supabase = createClient();
+  const supabase = await createClient();
   // const testDetails = await prisma.tests.findUnique({
   //   where: { id: testId },
   //   include: { questions: true },
@@ -71,7 +71,7 @@ export default async function TestEditorPage({
     await supabase
       .from("tests")
       .select(
-        "*, questions(id, answer, explanation, options, statement, subject)",
+        "*, questions(id, answer, explanation, options, statement, subject)"
       )
       .eq("id", testId)
       .single()

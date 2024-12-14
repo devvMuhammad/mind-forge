@@ -10,7 +10,7 @@ export async function deleteQuestion({
   questionId: number;
   testId: string;
 }) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error, data } = await supabase
     .from("questions")
     .delete()

@@ -1,11 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import AddQuestionsForm from "./add-questions-form";
-import { QuestionType } from "@/types";
 import QuestionsToAdd from "./questions-to-add";
-import { $Enums } from "@prisma/client";
-import { SubjectTypesForCategory, subjectsForCategories } from "@/config/tests";
+import { subjectsForCategories } from "@/config/tests";
 import {
   Select,
   SelectContent,
@@ -25,7 +21,7 @@ export default function EditingArea({
   currentCategory,
 }: {
   testId: string;
-  currentCategory: $Enums.TestCategory;
+  currentCategory: string;
 }) {
   const {
     currentSubject,
@@ -63,8 +59,8 @@ function SelectSubject({
   currentSubject,
   setCurrentSubject,
 }: {
-  currentCategory: $Enums.TestCategory;
-  currentSubject: $Enums.QuestionSubject | undefined;
+  currentCategory: string;
+  currentSubject: string | undefined;
   setCurrentSubject: (sub: $Enums.QuestionSubject) => void;
 }) {
   return (

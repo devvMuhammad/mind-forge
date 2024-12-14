@@ -12,7 +12,7 @@ type QuestionToBeEditedType = QuestionType & {
 };
 
 export async function editQuestion(question: QuestionToBeEditedType) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("questions")
     .update({

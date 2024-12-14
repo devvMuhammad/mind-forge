@@ -8,6 +8,9 @@ export default async function UserProfile() {
     console.log(error);
     return null;
   }
+
+  console.log(data.user);
+
   const name = data.user.user_metadata.name;
   const email = data.user.email;
   return <ProfileDropdown name={name} email={email as string} />;

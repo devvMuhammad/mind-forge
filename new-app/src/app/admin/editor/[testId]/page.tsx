@@ -1,22 +1,17 @@
 import SubjectQuestions from "@/components/editor/subject-questions";
 import TestDetails from "@/components/editor/test-details";
-import { QuestionType, SubjectType, TestType } from "@/types";
+import { QuestionType, SubjectType } from "@/types";
 import { redirect } from "next/navigation";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { Json } from "@/types/supabase";
-import { convertToPKT } from "@repo/utils/date";
+import { convertToPKT } from "@/lib/date";
 
 type TestEditorPageProps = {
-  params: {
+  params: Promise<{
     testId: string;
-  };
-};
-
-type TestEditorPageData = {
-  testData: TestType;
-  mcqsLength: number;
+  }>;
 };
 
 function TransformDBQuestions(
@@ -35,7 +30,7 @@ function TransformDBQuestions(
       | "biology"
       | "computer"
       | "basic_maths";
-  }[],
+  }[]
 ): SubjectType[] {
   return questions.reduce((acc: SubjectType[], curr) => {
     const newQuestion = {
@@ -46,7 +41,7 @@ function TransformDBQuestions(
       statement: curr.statement,
     };
     const subjectIndex = acc.findIndex(
-      (subject) => subject.subject === curr.subject,
+      (subject) => subject.subject === curr.subject
     );
     if (subjectIndex === -1)
       acc.push({
@@ -59,19 +54,15 @@ function TransformDBQuestions(
   }, []);
 }
 
-export default async function TestEditorPage({
-  params: { testId },
-}: TestEditorPageProps) {
-  const supabase = createClient();
-  // const testDetails = await prisma.tests.findUnique({
-  //   where: { id: testId },
-  //   include: { questions: true },
-  // });
+export default async function TestEditorPage({ params }: TestEditorPageProps) {
+  const supabase = await createClient();
+
+  const { testId } = await params;
   const testDetails = (
     await supabase
       .from("tests")
       .select(
-        "*, questions(id, answer, explanation, options, statement, subject)",
+        "*, questions(id, answer, explanation, options, statement, subject)"
       )
       .eq("id", testId)
       .single()
