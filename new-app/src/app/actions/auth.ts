@@ -81,7 +81,7 @@ export async function signOut() {
   }
 
   revalidatePath("/", "layout");
-  redirect("/auth/login");
+  redirect("/");
 }
 
 export const getSession = cache(async () => {

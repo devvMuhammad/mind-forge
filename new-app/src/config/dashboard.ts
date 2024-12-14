@@ -31,6 +31,12 @@ export const studentDashboardConfig = {
       href: "/student/dashboard/students",
       icon: "registration",
     },
+
+    {
+      title: "Forum",
+      href: "/forum",
+      icon: "registration",
+    },
   ],
 } satisfies {
   mainNav: DashboardNavMainItem[];
@@ -66,6 +72,11 @@ export const dashboardConfig = {
     {
       title: "Students",
       href: "/admin/dashboard/students",
+      icon: "registration",
+    },
+    {
+      title: "Forum",
+      href: "/forum",
       icon: "registration",
     },
   ],
