@@ -2,14 +2,7 @@ import { DashboardNavMainItem, DashboardNavSidebarItem } from "@/types";
 
 export const studentDashboardConfig = {
   mainNav: [
-    {
-      title: "Explore",
-      href: "/",
-    },
-    {
-      title: "Support",
-      href: "#",
-    },
+    { title: "Forum", href: "/forum" },
     {
       title: "Contact",
       href: "https://github.com/devvMuhammad",
@@ -26,12 +19,6 @@ export const studentDashboardConfig = {
       href: "/student/dashboard/results",
       icon: "result",
     },
-
-    {
-      title: "Forum",
-      href: "/forum",
-      icon: "registration",
-    },
   ],
 } satisfies {
   mainNav: DashboardNavMainItem[];
@@ -40,14 +27,7 @@ export const studentDashboardConfig = {
 
 export const dashboardConfig = {
   mainNav: [
-    {
-      title: "Explore",
-      href: "/",
-    },
-    {
-      title: "Support",
-      href: "#",
-    },
+    { title: "Forum", href: "/forum" },
     {
       title: "Contact",
       href: "https://github.com/devvMuhammad",
@@ -67,11 +47,6 @@ export const dashboardConfig = {
     {
       title: "Students",
       href: "/admin/dashboard/students",
-      icon: "registration",
-    },
-    {
-      title: "Forum",
-      href: "/forum",
       icon: "registration",
     },
   ],

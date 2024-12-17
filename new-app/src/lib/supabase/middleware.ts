@@ -63,6 +63,18 @@ export async function updateSession(request: NextRequest) {
   }
   const userRole = data[0].role;
 
+  if (userRole === "student" && request.nextUrl.pathname.startsWith("/auth")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/student/dashboard";
+    return NextResponse.redirect(url);
+  }
+
+  if (userRole === "founder" && request.nextUrl.pathname.startsWith("/auth")) {
+    const url = request.nextUrl.clone();
+    url.pathname = "/admin/dashboard";
+    return NextResponse.redirect(url);
+  }
+
   if (userRole === "student" && request.nextUrl.pathname.startsWith("/admin")) {
     const url = request.nextUrl.clone();
     url.pathname = "/student/dashboard";
