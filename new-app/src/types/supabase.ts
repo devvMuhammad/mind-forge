@@ -34,6 +34,41 @@ export type Database = {
   }
   public: {
     Tables: {
+      posts: {
+        Row: {
+          author_id: string
+          content: string
+          created_at: string
+          id: number
+          subject: Database["public"]["Enums"]["QuestionSubject"]
+          title: string
+        }
+        Insert: {
+          author_id?: string
+          content: string
+          created_at?: string
+          id?: number
+          subject: Database["public"]["Enums"]["QuestionSubject"]
+          title: string
+        }
+        Update: {
+          author_id?: string
+          content?: string
+          created_at?: string
+          id?: number
+          subject?: Database["public"]["Enums"]["QuestionSubject"]
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_author_id_fkey"
+            columns: ["author_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           category: Database["public"]["Enums"]["TestCategory"] | null
@@ -123,6 +158,38 @@ export type Database = {
         }
         Relationships: []
       }
+      replies: {
+        Row: {
+          author: string
+          content: string
+          created_at: string
+          id: number
+          post_id: number
+        }
+        Insert: {
+          author?: string
+          content: string
+          created_at?: string
+          id?: number
+          post_id: number
+        }
+        Update: {
+          author?: string
+          content?: string
+          created_at?: string
+          id?: number
+          post_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "replies_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       results: {
         Row: {
           created_at: string
@@ -131,7 +198,7 @@ export type Database = {
           scores: Json
           test_id: string
           total: number
-          wrong: Json | null
+          wrong: Json
         }
         Insert: {
           created_at?: string
@@ -140,7 +207,7 @@ export type Database = {
           scores: Json
           test_id?: string
           total: number
-          wrong?: Json | null
+          wrong: Json
         }
         Update: {
           created_at?: string
@@ -149,7 +216,7 @@ export type Database = {
           scores?: Json
           test_id?: string
           total?: number
-          wrong?: Json | null
+          wrong?: Json
         }
         Relationships: [
           {
