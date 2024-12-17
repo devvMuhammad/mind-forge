@@ -1,5 +1,5 @@
 import { toTitleCase } from "@/lib/utils";
-import { SubjectType } from "@/types";
+import { PossibleSubjectType, SubjectType } from "@/types";
 import QuestionCard from "./question-card";
 import QuestionCardContextProvider from "@/contexts/question-card-context";
 
@@ -26,7 +26,11 @@ export default function SubjectQuestions({
         {subject.questions.map((question, index) => (
           <QuestionCardContextProvider
             key={question.id}
-            value={{ testId, subject: subject.subject, question }}
+            value={{
+              testId,
+              subject: subject.subject as PossibleSubjectType,
+              question,
+            }}
           >
             <QuestionCard key={question.id} index={index} question={question} />
           </QuestionCardContextProvider>

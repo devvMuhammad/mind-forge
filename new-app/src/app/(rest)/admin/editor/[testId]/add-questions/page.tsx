@@ -1,5 +1,6 @@
 import EditingArea from "@/components/add-questions/editing-area";
 import { testsConfig } from "@/config/tests";
+import { PossibleCategoryType } from "@/types";
 import { redirect } from "next/navigation";
 
 type AddQuestionsEditorProps = {
@@ -24,7 +25,10 @@ export default async function page({
   return (
     <section>
       <h1 className="text-2xl font-bold">Interface for Adding MCQs</h1>
-      <EditingArea testId={testId} currentCategory={category} />
+      <EditingArea
+        testId={testId}
+        currentCategory={category as PossibleCategoryType}
+      />
     </section>
   );
 }

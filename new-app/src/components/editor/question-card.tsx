@@ -14,7 +14,7 @@ export default function QuestionCard({ index, question }: QuestionCardProps) {
       <CardHeader className="pb-2 ">
         <div className="w-full flex justify-between">
           <CardTitle className="text-base">Question: {index + 1}</CardTitle>
-          <CardOperations question={question} />
+          <CardOperations />
         </div>
       </CardHeader>
       <CardContent className="text-sm">

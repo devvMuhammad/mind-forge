@@ -16,7 +16,11 @@ export async function selectCategory({ category }: { category: string }) {
     return { error: "User not found" };
   }
 
-  if (!testsConfig.categories.includes(category as never)) {
+  if (
+    !testsConfig.categories.includes(
+      category as (typeof testsConfig.categories)[number]
+    )
+  ) {
     console.log(category);
     return { error: "Invalid category" };
   }

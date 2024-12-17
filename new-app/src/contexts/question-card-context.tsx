@@ -1,11 +1,10 @@
 "use client";
-import { QuestionType } from "@/types";
-import { $Enums } from "@prisma/client";
+import { PossibleSubjectType, QuestionType } from "@/types";
 import { createContext, useContext } from "react";
 
 type QuestionCardContextType = {
   question: QuestionType;
-  subject: $Enums.QuestionSubject;
+  subject: PossibleSubjectType;
   testId: string;
 };
 

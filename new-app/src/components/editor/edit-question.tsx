@@ -42,7 +42,15 @@ export default function EditQuestion({ questionData }: EditQuestionProps) {
     handleSubmit,
     formState: { errors },
   } = useForm<TEditQuestionSchema>({
-    defaultValues: questionData,
+    defaultValues: {
+      question: questionData.statement,
+      option1: questionData.options[0],
+      option2: questionData.options[1],
+      option3: questionData.options[2],
+      option4: questionData.options[3],
+      "correct-option": questionData.answer.toString(),
+      explanation: questionData.explanation || "",
+    },
     resolver: zodResolver(EditQuestionSchema),
   });
   const onSubmit = (data: TEditQuestionSchema) => {

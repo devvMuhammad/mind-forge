@@ -10,7 +10,7 @@ export const metadata = {
   title: "Dashboard",
 };
 
-export async function getStudentCategory() {
+async function getStudentCategory() {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();
   if (error) {
@@ -31,14 +31,8 @@ export async function getStudentCategory() {
 }
 
 export default async function Page() {
-  //! check this later and replace the protection part by middleware
-  // const { data, error } = await getSession();
-  // if (!data || error) {
-  //   redirect("/auth/login");
-  // }
   const supabase = await createClient();
   const { category, name } = await getStudentCategory();
-  // console.log({ category, name });
   if (!category) {
     return (
       <>

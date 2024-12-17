@@ -22,7 +22,8 @@ export default async function page({
   }
 
   console.log("this is the data", data[0].title);
-  const transformedData = transformData(data[0] as never);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const transformedData = transformData(data[0] as any);
 
   // return <pre>{JSON.strinArray.engineering} />;
   return <Test mcqBank={transformedData} />;
