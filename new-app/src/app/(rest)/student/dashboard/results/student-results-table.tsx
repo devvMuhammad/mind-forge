@@ -19,8 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { Database } from "@/types/supabase";
-import { EllipsisVertical, ViewIcon } from "lucide-react";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { EllipsisVertical } from "lucide-react";
 
 type Score = {
   score: number;
