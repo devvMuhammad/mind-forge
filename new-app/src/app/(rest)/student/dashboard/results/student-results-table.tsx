@@ -19,7 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { format } from "date-fns";
 import { Database } from "@/types/supabase";
-import { EllipsisVertical } from "lucide-react";
+import { Icons } from "@/components/icons";
 
 type Score = {
   score: number;
@@ -32,8 +32,8 @@ type AttemptData = Database["public"]["Tables"]["results"]["Row"];
 const ScoresDialog = ({ scores }: { scores: Score[] }) => (
   <Dialog>
     <DialogTrigger asChild>
-      <Button size="icon">
-        <EllipsisVertical className="h-4 w-4" />
+      <Button size="icon" variant="outline" className="h-6 w-6">
+        <Icons.ellipsis className="h-5 w-5" />
       </Button>
     </DialogTrigger>
     <DialogContent>
