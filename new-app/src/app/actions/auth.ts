@@ -95,7 +95,7 @@ export async function loginSSO() {
     provider: "google",
 
     options: {
-      redirectTo: "http://localhost:3000/auth/callback",
+      redirectTo: `${process.env.NEXT_PUBLIC_URL}/auth/callback`,
     },
   });
 
