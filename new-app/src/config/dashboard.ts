@@ -26,11 +26,6 @@ export const studentDashboardConfig = {
       href: "/student/dashboard/results",
       icon: "result",
     },
-    {
-      title: "Students",
-      href: "/student/dashboard/students",
-      icon: "registration",
-    },
 
     {
       title: "Forum",

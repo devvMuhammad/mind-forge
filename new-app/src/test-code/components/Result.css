@@ -1,0 +1,83 @@
+.result-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.result-heading {
+  margin-top: 1.2rem;
+  text-align: center;
+}
+
+.result-table {
+  border-collapse: collapse;
+  margin-top: 1rem;
+  width: 80%;
+  max-width: 800px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  font-size: 1.2rem;
+}
+
+.result-table th,
+.result-table td {
+  border: 2px solid #dcdcdc;
+  padding: 0.8rem;
+  text-align: center;
+}
+
+.result-table th {
+  font-weight: bold;
+}
+
+.result-table td:first-child {
+  text-align: left;
+}
+
+.result-table th,
+.result-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.result-table tr:hover {
+  background-color: #f5f5f5;
+}
+
+@media screen and (max-width: 768px) {
+  .result-table {
+    font-size: 1rem;
+  }
+}
+
+.result-table td.percentage-label {
+  text-align: right;
+  font-weight: bold;
+}
+
+.result-table td.percentage-value {
+  font-weight: bold;
+}
+
+.result-table td.percentage-label {
+  text-align: center;
+  font-weight: bold;
+}
+
+.result-table td.percentage-value {
+  font-weight: bold;
+}
+
+.attempt-again {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 2rem;
+  margin: 1.2rem;
+  cursor: pointer;
+  width: 200px;
+}
+.attempt-again:hover {
+  background-color: #f9f9f9;
+}

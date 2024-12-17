@@ -1,0 +1,4 @@
+COOKIES IN NEXTJS APP
+- set the cookies using a server action during the login
+- read and check
+- delete cookies after clicking confirms

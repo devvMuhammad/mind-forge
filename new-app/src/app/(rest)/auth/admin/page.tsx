@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { founders } from "@/config/founders";
 import PasswordInput from "@/components/ui/password-input";
-import { login } from "../../actions/auth";
+import { login } from "@/app/actions/auth";
 import { useMutation } from "@tanstack/react-query";
 import { useUserContext } from "@/contexts/user-context";
 import { useRouter } from "next/navigation";
