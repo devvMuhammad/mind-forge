@@ -7,6 +7,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/forum/:path*",
     "/student/:path*",
     "/admin/:path*",
     /*

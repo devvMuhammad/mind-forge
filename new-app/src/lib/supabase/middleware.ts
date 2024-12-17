@@ -48,6 +48,10 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  if (request.nextUrl.pathname.startsWith("/forum")) {
+    return NextResponse.next({ status: 200 });
+  }
+
   const { data, error } = await getUserRole(user?.id as string);
 
   if (!data || error) {
