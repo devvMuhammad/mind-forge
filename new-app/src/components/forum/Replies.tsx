@@ -1,12 +1,14 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 interface Reply {
   id: string;
   author: string;
   content: string;
   createdAt: string;
+  role?: string; // Add role field
 }
 
 interface RepliesProps {
@@ -15,7 +17,7 @@ interface RepliesProps {
 
 export function Replies({ replies }: RepliesProps) {
   return (
-    <div className="mt-6 space-y-4">
+    <div className="w-full max-w-4xl mx-auto mt-6 space-y-4">
       {replies.map((reply) => (
         <Card key={reply.id}>
           <CardHeader className="flex flex-row items-center gap-4 p-4">
@@ -30,8 +32,16 @@ export function Replies({ replies }: RepliesProps) {
                   .join("")}
               </AvatarFallback>
             </Avatar>
-            <div>
+            <div className="flex items-center gap-2">
               <p className="text-sm font-semibold">{reply.author}</p>
+              {reply.role === "founder" && (
+                <Badge
+                  variant="secondary"
+                  className="bg-purple-100 text-purple-800"
+                >
+                  Founder
+                </Badge>
+              )}
               <p className="text-xs text-muted-foreground">
                 {new Date(reply.createdAt).toLocaleDateString()}
               </p>

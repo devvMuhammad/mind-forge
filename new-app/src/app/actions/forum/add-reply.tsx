@@ -21,7 +21,7 @@ export async function addReply({
 
     const { data, error } = await supabase
       .from("replies")
-      .insert([{ content, post_id: postId, user_id: userId }]);
+      .insert({ post_id: +postId, author_id: userId, content: content });
 
     if (error) {
       throw new Error(error.message);

@@ -12,9 +12,12 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { ChevronLeft, MessageSquare, ThumbsUp, Send } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { useToast } from "@/components/ui/use-toast";
+import { addReply } from "@/app/actions/forum/add-reply";
+import { Replies } from "@/components/forum/Replies";
 
 interface PostProps {
   title: string;
@@ -22,8 +25,10 @@ interface PostProps {
   content: string;
   category: string;
   createdAt: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   replies?: any[]; // Adjust type as needed
   likes?: number;
+  postId: string;
 }
 
 export default function Post({
@@ -34,21 +39,46 @@ export default function Post({
   createdAt,
   replies = [],
   likes = 0,
+  postId,
 }: PostProps) {
   const [isReplying, setIsReplying] = useState(false);
   const [replyContent, setReplyContent] = useState("");
+  const { toast } = useToast();
+
+  const replyMutation = useMutation({
+    mutationFn: (content: string) => addReply({ content, postId }),
+    onSuccess: (data) => {
+      if (data.error) {
+        toast({
+          title: "Error",
+          description: data.error,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Success",
+          description: data.message,
+        });
+        setReplyContent("");
+        setIsReplying(false);
+      }
+    },
+    onError: () => {
+      toast({
+        title: "Error",
+        description: "Failed to send reply. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
 
   const handleReply = () => {
     setIsReplying(true);
   };
 
   const handleSendReply = () => {
-    // Here you would typically send the reply to your backend
-    console.log("Sending reply:", replyContent);
-    // Reset the reply state
-    setReplyContent("");
-    setIsReplying(false);
-    // Optionally, you could update the UI to show the new reply
+    if (!replyContent.trim()) return;
+    replyMutation.mutate(replyContent);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -133,15 +163,36 @@ export default function Post({
                 onChange={(e) => setReplyContent(e.target.value)}
                 onKeyDown={handleKeyDown}
                 className="mb-2"
+                disabled={replyMutation.isPending}
               />
-              <Button onClick={handleSendReply} className="float-right">
-                <Send className="mr-2 h-4 w-4" />
-                Send
+              <Button
+                onClick={handleSendReply}
+                className="float-right"
+                disabled={replyMutation.isPending}
+              >
+                {replyMutation.isPending ? (
+                  <span className="flex items-center">
+                    <span className="animate-spin mr-2">⏳</span> Sending...
+                  </span>
+                ) : (
+                  <>
+                    <Send className="mr-2 h-4 w-4" />
+                    Send
+                  </>
+                )}
               </Button>
             </div>
           )}
         </CardFooter>
       </Card>
+      <Replies
+        replies={replies.map((reply) => ({
+          id: reply.id,
+          author: reply.profiles.name,
+          content: reply.content,
+          createdAt: reply.created_at,
+        }))}
+      />
     </div>
   );
 }

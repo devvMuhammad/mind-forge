@@ -16,6 +16,7 @@ function ForumPost(props: {
   title: string;
   description: string;
   category: string;
+  studentPicture?: string;
 }) {
   return (
     <Link href={`/forum/${props.id}`}>
@@ -25,7 +26,10 @@ function ForumPost(props: {
             <div className="flex items-center space-x-4">
               <Avatar>
                 <AvatarImage
-                  src={`https://api.dicebear.com/6.x/initials/svg?seed=${props.studentName}`}
+                  src={
+                    props.studentPicture ||
+                    `https://api.dicebear.com/6.x/initials/svg?seed=${props.studentName}`
+                  }
                 />
                 <AvatarFallback>
                   {props.studentName

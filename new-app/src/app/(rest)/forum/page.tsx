@@ -7,7 +7,10 @@ import Link from "next/link";
 export default async function Forum() {
   const supabase = await createClient();
 
-  const { data: posts } = await supabase.from("posts").select("*, profiles(*)");
+  const { data: posts } = await supabase
+    .from("posts")
+    .select("*, profiles(*)")
+    .order("created_at", { ascending: false });
 
   return (
     <div>

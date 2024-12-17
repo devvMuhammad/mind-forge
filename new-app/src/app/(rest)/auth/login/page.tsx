@@ -27,7 +27,7 @@ export default function Login() {
           size="lg"
           className="grid grid-cols-[auto_1fr] text-left gap-4 bg-white hover:bg-black/5 text-gray-500 border-2 px-6 rounded-md"
         >
-          <Icons.add className="mr-2 size-5" />
+          <Icons.google className="mr-2 size-5" />
           Log in with Google
         </Button>
       </div>
