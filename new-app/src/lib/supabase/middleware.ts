@@ -42,9 +42,12 @@ export async function updateSession(request: NextRequest) {
   if (!user) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
-    if (request.nextUrl.pathname.startsWith("/admin"))
-      url.pathname = "auth/admin";
-    else url.pathname = "auth/login";
+
+    if (request.nextUrl.pathname.startsWith("/auth")) {
+      return NextResponse.next({ status: 200 });
+    }
+
+    url.pathname = "auth/login";
     return NextResponse.redirect(url);
   }
 
