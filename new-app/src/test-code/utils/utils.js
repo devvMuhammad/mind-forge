@@ -1,4 +1,5 @@
 export const calculateScore = (mcqArray) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let score = 0;
   let subjectScoresArray = [];
   let wrongQuestionsIndices = [];

@@ -2,13 +2,13 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { QuestionType } from "@/types";
-import { $Enums } from "@prisma/client";
+import { Database } from "@/types/supabase";
 import { revalidatePath } from "next/cache";
 
 type QuestionToBeEditedType = QuestionType & {
   questionId: number;
   test_id: string;
-  subject: $Enums.QuestionSubject;
+  subject: Database["public"]["Enums"]["QuestionSubject"];
 };
 
 export async function editQuestion(question: QuestionToBeEditedType) {

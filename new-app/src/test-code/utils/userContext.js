@@ -1,6 +1,6 @@
 "use client";
 
-const { createContext, useContext, useState, useEffect } = require("react");
+import { createContext, useContext, useState, useEffect } from "react";
 
 const userContext = createContext({
   user: { name: "", email: "", test: "" },

@@ -15,12 +15,9 @@ import {
 } from "@/components/ui/table";
 import { Database } from "@/types/supabase";
 import { formatDate, toTitleCase } from "@/lib/utils";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 // base cdn link
 const CDN =
@@ -54,7 +51,7 @@ const columns: ColumnDef<RegistrationType>[] = [
             <Button size="icon">I</Button>
           </DialogTrigger>
           <DialogContent>
-            <img src={url} alt="image" />
+            <Image width={50} height={50} src={url} alt="image" />
           </DialogContent>
         </Dialog>
       );
@@ -83,7 +80,7 @@ export default function RegistrationTable({
                 <TableHead key={header.id}>
                   {flexRender(
                     header.column.columnDef.header,
-                    header.getContext(),
+                    header.getContext()
                   )}
                 </TableHead>
               ))}

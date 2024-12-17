@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { QuestionType } from "@/types";
 import { useMutation } from "@tanstack/react-query";
-import { $Enums } from "@prisma/client";
+import { Database } from "@/types/supabase";
 
 const EditQuestionSchema = z.object({
   statement: z
@@ -54,17 +55,19 @@ type TEditQuestionSchema = z.infer<typeof EditQuestionSchema>;
 type QuestionToBeEditedType = QuestionType & {
   questionId: number;
   test_id: string;
-  subject: $Enums.QuestionSubject;
+  subject: Database["public"]["Enums"]["QuestionSubject"];
 };
 
 type QuestionFormProps =
   | {
       mode: "edit";
       initialData: QuestionType;
-      actionToPerformWithData: (data: QuestionToBeEditedType) => Promise<any>;
+      actionToPerformWithData: (
+        data: QuestionToBeEditedType
+      ) => Promise<QuestionToBeEditedType>;
       actionPerformedOnSuccess: () => void;
       actionPerformedOnError?: (err: any) => void;
-      subject: $Enums.QuestionSubject;
+      subject: Database["public"]["Enums"]["QuestionSubject"];
       testId: string;
       questionId: number;
     }
@@ -80,7 +83,7 @@ type QuestionFormProps =
     };
 
 function transformQuestionToSchemaForm(
-  question: QuestionType | undefined,
+  question: QuestionType | undefined
 ): TEditQuestionSchema | undefined {
   if (question === undefined) return undefined;
   return {
@@ -115,7 +118,7 @@ export default function QuestionForm({
 
   const { mutate, isPending } = useMutation({
     mutationFn: actionToPerformWithData as (
-      data: QuestionToBeEditedType | QuestionType,
+      data: QuestionToBeEditedType | QuestionType
     ) => Promise<any>,
     onSuccess: () => {
       if (mode === "edit") actionPerformedOnSuccess();

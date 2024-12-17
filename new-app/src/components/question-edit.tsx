@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import {
   Dialog,
   DialogContent,
@@ -9,7 +8,6 @@ import {
 } from "@/components/ui/dialog";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import QuestionForm from "./question-form-new";
-import { QuestionType } from "@/types";
 import { useQuestionCardContext } from "@/contexts/question-card-context";
 import { editQuestion } from "@/app/actions/edit-question";
 import { useState } from "react";

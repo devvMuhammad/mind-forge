@@ -14,7 +14,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { QuestionToBeEditedType, QuestionType } from "@/types";
-import { $Enums } from "@prisma/client";
+import { Database } from "@/types/supabase";
 
 const EditQuestionSchema = z.object({
   statement: z
@@ -51,7 +51,7 @@ const EditQuestionSchema = z.object({
 type TEditQuestionSchema = z.infer<typeof EditQuestionSchema>;
 
 function transformQuestionToSchemaForm(
-  question: QuestionType | undefined,
+  question: QuestionType | undefined
 ): TEditQuestionSchema | undefined {
   if (question === undefined) return undefined;
   return {
@@ -65,35 +65,13 @@ function transformQuestionToSchemaForm(
   };
 }
 
-// type QuestionFormProps =
-//   | {
-//       mode: "edit";
-//       initialData: QuestionType;
-//       actionToPerformWithData: (data: QuestionToBeEditedType) => Promise<any>;
-//       actionPerformedOnSuccess: () => void;
-//       actionPerformedOnError?: (err: any) => void;
-//       subject: $Enums.QuestionSubject;
-//       testId: string;
-//       questionId: number;
-//     }
-//   | {
-//       mode: "add";
-//       initialData?: undefined;
-//       actionToPerformWithData: (data: QuestionType) => Promise<any>;
-//       actionPerformedOnSuccess?: undefined;
-//       actionPerformedOnError?: undefined;
-//       subject: string | undefined; // needed to ensure button is disabled if no subject is selected from the select element
-//       testId?: undefined;
-//       questionId?: undefined;
-//     };
-
 type QuestionFormProps =
   | {
       mode: "edit";
       initialData: QuestionType;
       submitHandler: (data: QuestionToBeEditedType) => void;
       // will be provided in case of edit
-      subject: $Enums.QuestionSubject;
+      subject: Database["public"]["Enums"]["QuestionSubject"];
       testId: string;
       questionId: number;
       // isPending state for the button
@@ -121,7 +99,7 @@ export default function QuestionForm(props: QuestionFormProps) {
     formState: { errors },
   } = useForm<TEditQuestionSchema>({
     defaultValues: transformQuestionToSchemaForm(
-      props.mode === "edit" ? props.initialData : undefined,
+      props.mode === "edit" ? props.initialData : undefined
     ),
     resolver: zodResolver(EditQuestionSchema),
   });

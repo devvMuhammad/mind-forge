@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ReactQueryProvider from "@/lib/react-query-provider";
 import { UserContextProvider } from "@/contexts/user-context";
 import { Inter } from "next/font/google";
+import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -19,6 +20,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <UserContextProvider>
           <ReactQueryProvider>{children}</ReactQueryProvider>
+          <Toaster />
         </UserContextProvider>
       </body>
     </html>

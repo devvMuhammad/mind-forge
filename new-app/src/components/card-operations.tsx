@@ -12,10 +12,9 @@ import {
 // import { toast } from "@/components/ui/use-toast";
 import { Icons } from "@/components/icons";
 import QuestionEdit from "./question-edit";
-import { QuestionType } from "@/types";
 import QuestionDelete from "./question-delete";
 
-export function CardOperations({ question }: { question: QuestionType }) {
+export function CardOperations() {
   //! LOGIC WILL BE DISCUSSED LATER
   return (
     <>

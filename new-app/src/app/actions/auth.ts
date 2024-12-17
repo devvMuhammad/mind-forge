@@ -93,6 +93,7 @@ export async function loginSSO() {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
+
     options: {
       redirectTo: "http://localhost:3000/auth/callback",
     },

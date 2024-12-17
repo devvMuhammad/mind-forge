@@ -1,10 +1,34 @@
 import PageTitle from "@/components/page-title";
+import SelectCategory from "@/components/select-category";
+import TestCard from "@/components/student/test-card";
 import TestsSkeleton from "@/components/tests/tests-skeleton";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
 
 export const metadata = {
   title: "Dashboard",
 };
+
+export async function getStudentCategory() {
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.getUser();
+  if (error) {
+    console.log("error in getStudentCategory", error);
+    redirect("/");
+  }
+
+  const { data: profileData, error: profileError } = await supabase
+    .from("profiles")
+    .select("category,name")
+    .eq("id", data.user.id);
+  if (profileError) {
+    console.log("error in getStudentCategory", error);
+    redirect("/");
+  }
+
+  return profileData[0];
+}
 
 export default async function Page() {
   //! check this later and replace the protection part by middleware
@@ -12,6 +36,29 @@ export default async function Page() {
   // if (!data || error) {
   //   redirect("/auth/login");
   // }
+  const supabase = await createClient();
+  const { category, name } = await getStudentCategory();
+  // console.log({ category, name });
+  if (!category) {
+    return (
+      <>
+        <PageTitle
+          heading={`Hi, ${name}!`}
+          description="You need to select a category to start your attempts!"
+          containsButton={false}
+        />
+        <Suspense fallback={<TestsSkeleton />}>
+          <SelectCategory />
+        </Suspense>
+      </>
+    );
+  }
+
+  const { data: tests } = await supabase
+    .from("tests")
+    .select("*, questions:questions(count)")
+    .eq("category", category);
+
   return (
     <>
       <PageTitle
@@ -20,7 +67,17 @@ export default async function Page() {
         containsButton={false}
       />
       <Suspense fallback={<TestsSkeleton />}>
-        <h1>Update with the number of tests</h1>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          {tests?.map((test) => (
+            <TestCard
+              key={test.id}
+              id={test.id}
+              title={test.title}
+              questionsLength={test.questions[0]?.count ?? 0}
+              category={test.category}
+            />
+          ))}
+        </div>
       </Suspense>
     </>
   );

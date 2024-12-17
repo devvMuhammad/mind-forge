@@ -15,13 +15,15 @@ import { toTitleCase } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 import { useEditingArea } from "@/hooks/useEditingArea";
 import QuestionForm from "../question-form-new";
+import { Database } from "@/types/supabase";
+import { PossibleCategoryType } from "@/types";
 
 export default function EditingArea({
   testId,
   currentCategory,
 }: {
   testId: string;
-  currentCategory: string;
+  currentCategory: PossibleCategoryType;
 }) {
   const {
     currentSubject,
@@ -61,7 +63,9 @@ function SelectSubject({
 }: {
   currentCategory: string;
   currentSubject: string | undefined;
-  setCurrentSubject: (sub: $Enums.QuestionSubject) => void;
+  setCurrentSubject: (
+    sub: Database["public"]["Enums"]["QuestionSubject"]
+  ) => void;
 }) {
   return (
     <div className="my-4 py-2 flex gap-2 items-center">
@@ -78,11 +82,13 @@ function SelectSubject({
         <SelectContent id="subject">
           <SelectGroup>
             <SelectLabel>Subjects</SelectLabel>
-            {subjectsForCategories[currentCategory].map((subject) => (
-              <SelectItem key={subject} value={subject}>
-                {toTitleCase(subject)}
-              </SelectItem>
-            ))}
+            {subjectsForCategories[currentCategory as PossibleCategoryType].map(
+              (subject) => (
+                <SelectItem key={subject} value={subject}>
+                  {toTitleCase(subject)}
+                </SelectItem>
+              )
+            )}
           </SelectGroup>
         </SelectContent>
       </Select>

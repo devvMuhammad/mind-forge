@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ZodType, z } from "zod";
+import { z } from "zod";
 import { QuestionType } from "@/types";
 // import { Dispatch, SetStateAction } from "react";
 
@@ -61,7 +61,6 @@ export default function AddQuestionsForm({
 }: AddQuestionsFormProps) {
   // console.log("params in add questions page", testId);
   const {
-    register,
     handleSubmit,
     control,
     formState: { errors },

@@ -34,8 +34,8 @@ import {
 } from "@/test-code/utils/context";
 import Image from "next/image";
 import LoadingOverlay from "./LoadingOverlay";
-import { submitResult } from "@/test-code/utils/submitResult";
-import { useRouter } from "next/navigation";
+import { submitResult } from "@/app/actions/test/submit-result";
+import { useRouter, usePathname } from "next/navigation";
 import testContext from "@/test-code/utils/testContext";
 import { useUserContext } from "@/test-code/utils/userContext";
 // import { useAuthContext } from "../auth/userContext";
@@ -272,15 +272,18 @@ const Functionalities = ({ outOf }) => {
   const { setTestFinished } = useContext(testContext);
   // const { setUser } = useUserContext();
   const router = useRouter();
+  const pathname = usePathname();
+  const testId = pathname.split("/test/")[1];
   async function finishTest() {
     setLoading(true);
     try {
-      const response = await submitResult(mcqArray);
+      const response = await submitResult(testId, mcqArray);
+      console.log("RESPONSE OF SUBMIT RESULT", response);
       if (!response.success) throw new Error(response.message);
       // setTest
       setTestFinished(false);
       // setUser(null);
-      router.replace("/end");
+      router.replace("/admin/dashboard");
       toast.success("Your result has been submitted!");
       console.log(response);
     } catch (err) {

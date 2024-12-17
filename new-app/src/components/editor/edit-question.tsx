@@ -78,7 +78,7 @@ export default function EditQuestion({ questionData }: EditQuestionProps) {
           </div>
           {/* question options */}
           {options.map((option, i) => (
-            <div className="grid gap-2">
+            <div key={option + i} className="grid gap-2">
               <Label htmlFor={`option${i + 1}`}>Option {i + 1}</Label>
               <Textarea
                 id={`option${i + 1}`}

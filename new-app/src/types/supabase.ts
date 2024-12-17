@@ -7,36 +7,56 @@ export type Json =
   | Json[]
 
 export type Database = {
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          operationName?: string
+          query?: string
+          variables?: Json
+          extensions?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       profiles: {
         Row: {
+          category: Database["public"]["Enums"]["TestCategory"] | null
           created_at: string
           id: string
           name: string
           role: Database["public"]["Enums"]["role"]
         }
         Insert: {
+          category?: Database["public"]["Enums"]["TestCategory"] | null
           created_at?: string
           id?: string
           name?: string
           role?: Database["public"]["Enums"]["role"]
         }
         Update: {
+          category?: Database["public"]["Enums"]["TestCategory"] | null
           created_at?: string
           id?: string
           name?: string
           role?: Database["public"]["Enums"]["role"]
         }
-        Relationships: [
-          {
-            foreignKeyName: "profiles_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
       questions: {
         Row: {
@@ -103,6 +123,51 @@ export type Database = {
         }
         Relationships: []
       }
+      results: {
+        Row: {
+          created_at: string
+          id: number
+          profile_id: string
+          scores: Json
+          test_id: string
+          total: number
+          wrong: Json | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          profile_id?: string
+          scores: Json
+          test_id?: string
+          total: number
+          wrong?: Json | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          profile_id?: string
+          scores?: Json
+          test_id?: string
+          total?: number
+          wrong?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "results_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "results_test_id_fkey"
+            columns: ["test_id"]
+            isOneToOne: false
+            referencedRelation: "tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       tests: {
         Row: {
           attempts: number
@@ -111,6 +176,7 @@ export type Database = {
           id: string
           last_changed: string
           last_changed_by: string
+          published: boolean
           title: string
         }
         Insert: {
@@ -120,6 +186,7 @@ export type Database = {
           id?: string
           last_changed?: string
           last_changed_by: string
+          published?: boolean
           title: string
         }
         Update: {
@@ -129,6 +196,7 @@ export type Database = {
           id?: string
           last_changed?: string
           last_changed_by?: string
+          published?: boolean
           title?: string
         }
         Relationships: []
@@ -239,4 +307,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never

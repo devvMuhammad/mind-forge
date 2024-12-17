@@ -32,7 +32,7 @@ export default function CreateTestForm() {
   const { handleSubmit, control, register, reset } = useForm<TCreateTestSchema>(
     {
       resolver: zodResolver(createTestSchema),
-    },
+    }
   );
 
   const { isPending, mutate } = useMutation({
@@ -76,7 +76,7 @@ export default function CreateTestForm() {
                 <SelectValue placeholder="Select Category" />
               </SelectTrigger>
               <SelectContent>
-                {testsConfig.categories.map((category, index) => (
+                {testsConfig.categories.map((category) => (
                   <SelectItem value={category} key={category}>
                     {toTitleCase(category)}
                   </SelectItem>

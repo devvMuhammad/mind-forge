@@ -1,4 +1,4 @@
-import { $Enums } from "@prisma/client";
+import { Database } from "@/types/supabase";
 
 export const testsConfig = {
   categories: ["engineering", "medical", "ics", "business"],
@@ -19,7 +19,10 @@ export const subjectsForCategories = {
   medical: ["biology", "physics", "chemistry", "english", "iq"],
   ics: ["mathematics", "physics", "computer", "english", "iq"],
   business: ["basic_maths", "english", "iq"],
-} satisfies Record<$Enums.TestCategory, $Enums.QuestionSubject[]>;
+} satisfies Record<
+  Database["public"]["Enums"]["TestCategory"],
+  Database["public"]["Enums"]["QuestionSubject"][]
+>;
 
 // get the union of all the subjects of a particular category provided in generic
 export type SubjectTypesForCategory<

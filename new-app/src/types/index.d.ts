@@ -1,6 +1,4 @@
 import { Icons } from "@/components/icons";
-import { dashboardConfig } from "@/config/dashboard";
-import { $Enums } from "@prisma/client";
 import { Database } from "./supabase";
 
 // @Dashboard Types
@@ -57,6 +55,7 @@ export type ErrorResponse = {
 
 export type GoodResponse = {
   success: true;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
 };
 

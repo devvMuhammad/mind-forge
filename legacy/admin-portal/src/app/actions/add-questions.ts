@@ -1,13 +1,13 @@
 "use server";
 import { createClient } from "@/lib/supabase/server";
 import { QuestionType } from "@/types";
+import { Database } from "@/types/supabase";
 // import { prisma } from "@/lib/prisma";
-import { $Enums } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 type QuestionToBeAddedType = QuestionType & {
   test_id: string;
-  subject: $Enums.QuestionSubject;
+  subject: Database["public"]["Enums"]["QuestionSubject"];
 };
 
 export async function addQuestions(questions: QuestionToBeAddedType[]) {

@@ -49,7 +49,6 @@ export async function updateSession(request: NextRequest) {
   }
 
   const { data, error } = await getUserRole(user?.id as string);
-  console.log("user role result", data, error);
 
   if (!data || error) {
     console.error(error);

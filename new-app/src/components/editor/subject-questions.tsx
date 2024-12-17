@@ -1,9 +1,6 @@
-import { Button, buttonVariants } from "@/components/ui/button";
 import { toTitleCase } from "@/lib/utils";
 import { SubjectType } from "@/types";
-import { ChevronDown } from "lucide-react";
 import QuestionCard from "./question-card";
-import Link from "next/link";
 import QuestionCardContextProvider from "@/contexts/question-card-context";
 
 type SubjectQuestionsProps = {
@@ -13,7 +10,6 @@ type SubjectQuestionsProps = {
 };
 export default function SubjectQuestions({
   testId,
-  testCategory,
   mcqs,
 }: SubjectQuestionsProps) {
   return mcqs.map((subject) => (
@@ -30,7 +26,7 @@ export default function SubjectQuestions({
         {subject.questions.map((question, index) => (
           <QuestionCardContextProvider
             key={question.id}
-            value={{ testId, subject: subject.subject as any, question }}
+            value={{ testId, subject: subject.subject, question }}
           >
             <QuestionCard key={question.id} index={index} question={question} />
           </QuestionCardContextProvider>
