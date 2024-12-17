@@ -13,10 +13,14 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
       //! i customized it myself lol
-      return NextResponse.redirect(`${origin}/student/dashboard`);
+      return NextResponse.redirect(
+        `${process.env.NEXT_PUBLIC_URL!}/student/dashboard`
+      );
     }
   }
 
   // return the user to an error page with instructions
-  return NextResponse.redirect(`${origin}/auth/auth-code-error`);
+  return NextResponse.redirect(
+    `${process.env.NEXT_PUBLIC_URL!}/auth/auth-code-error`
+  );
 }
