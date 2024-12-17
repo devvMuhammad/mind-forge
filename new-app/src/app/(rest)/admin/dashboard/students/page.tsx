@@ -1,17 +1,29 @@
-import PageTitle from "@/components/page-title";
+import { Suspense } from "react";
 import { createClient } from "@/lib/supabase/server";
 
-export default async function page() {
+import PageTitle from "@/components/page-title";
+import { StudentTable } from "@/components/student/student-table";
+export const metadata = {
+  title: "Students",
+};
+
+async function getStudents() {
   const supabase = await createClient();
-  const { data: students, error } = await supabase
+  const { data, error } = await supabase
     .from("profiles")
-    .select("*")
+    .select("id, created_at, name, category")
     .eq("role", "student");
 
   if (error) {
-    console.error(error);
-    return <h1>Error while loading students</h1>;
+    console.error("Error fetching students:", error);
+    throw new Error("Failed to fetch students");
   }
+
+  return data;
+}
+
+export default async function Page() {
+  const students = await getStudents();
 
   return (
     <>
@@ -20,7 +32,9 @@ export default async function page() {
         description="View All Registered Students"
         containsButton={false}
       />
-      <pre>{JSON.stringify(students, null, 2)}</pre>
+      <Suspense fallback={<div>Loading students...</div>}>
+        <StudentTable data={students} />
+      </Suspense>
     </>
   );
 }
