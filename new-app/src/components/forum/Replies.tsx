@@ -34,6 +34,10 @@ export function Replies({ replies }: RepliesProps) {
             </Avatar>
             <div className="flex items-center gap-2">
               <p className="text-sm font-semibold">{reply.author}</p>
+
+              <p className="text-xs text-muted-foreground">
+                {new Date(reply.createdAt).toLocaleDateString()}
+              </p>
               {reply.role === "founder" && (
                 <Badge
                   variant="secondary"
@@ -42,9 +46,6 @@ export function Replies({ replies }: RepliesProps) {
                   Founder
                 </Badge>
               )}
-              <p className="text-xs text-muted-foreground">
-                {new Date(reply.createdAt).toLocaleDateString()}
-              </p>
             </div>
           </CardHeader>
           <CardContent className="p-4 pt-0">

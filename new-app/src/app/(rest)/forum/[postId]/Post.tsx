@@ -191,6 +191,7 @@ export default function Post({
           author: reply.profiles.name,
           content: reply.content,
           createdAt: reply.created_at,
+          role: reply.profiles.role,
         }))}
       />
     </div>
