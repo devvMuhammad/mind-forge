@@ -14,11 +14,18 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { ChevronLeft, MessageSquare, Share2 } from "lucide-react";
 import { Replies } from "@/./components/forum/Replies";
+import { toTitleCase } from "@/lib/utils";
 
-export default function Post({ post }: { post: any }) {
+export default function Post(post: {
+  title: string;
+  content: string;
+  category: string;
+  studentName: string;
+  createdAt: string;
+  replies: any[];
+}) {
   const [showReplies, setShowReplies] = useState(false);
 
   if (!post) {
@@ -64,13 +71,11 @@ export default function Post({ post }: { post: any }) {
               </div>
             </div>
             <Badge variant="secondary" className="text-sm">
-              {post.category}
+              {toTitleCase(post.category)}
             </Badge>
           </div>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground mb-4">{post.description}</p>
-          <Separator className="my-4" />
           <div className="prose dark:prose-invert max-w-none">
             <p>{post.content}</p>
           </div>

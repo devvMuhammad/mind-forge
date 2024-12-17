@@ -1,10 +1,15 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { TPostSchema } from "@/lib/zod/post";
 import { revalidatePath } from "next/cache";
 
-export async function createPost({ post }: { post: TPostSchema }) {
+export async function addReply({
+  content,
+  postId,
+}: {
+  content: string;
+  postId: string;
+}) {
   try {
     const supabase = await createClient();
 
@@ -15,16 +20,14 @@ export async function createPost({ post }: { post: TPostSchema }) {
     }
 
     const { data, error } = await supabase
-      .from("posts")
-      .insert({ ...post, author_id: userId });
+      .from("replies")
+      .insert([{ content, post_id: postId, user_id: userId }]);
 
     if (error) {
-      console.error("error while creating post", error);
       throw new Error(error.message);
     }
-
-    revalidatePath("/forum");
-    return { data, message: "Post created successfully!" };
+    revalidatePath(`/forum/${postId}`);
+    return { data, message: "Reply added successfully!" };
   } catch (err) {
     return { error: (err as Error).message };
   }

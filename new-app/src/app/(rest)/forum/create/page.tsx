@@ -24,31 +24,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-
-// Validation schema
-const postSchema = z.object({
-  title: z
-    .string()
-    .min(5, { message: "Title must be at least 5 characters long" })
-    .max(100, { message: "Title cannot exceed 100 characters" }),
-  category: z.enum(
-    [
-      "Chemistry",
-      "Mathematics",
-      "Biology",
-      "English",
-      "Intelligence",
-      "Physics",
-    ],
-    {
-      required_error: "Please select a category",
-    }
-  ),
-  content: z
-    .string()
-    .min(20, { message: "Content must be at least 20 characters long" })
-    .max(2000, { message: "Content cannot exceed 2000 characters" }),
-});
+import { postSchema } from "@/lib/zod/post";
+import { useMutation } from "@tanstack/react-query";
+import { createPost } from "@/app/actions/forum/create-post";
+import { testsConfig } from "@/config/tests";
+import { toTitleCase } from "@/lib/utils";
 
 // TypeScript type inference from Zod schema
 type PostFormData = z.infer<typeof postSchema>;
@@ -57,35 +37,43 @@ export default function CreatePost() {
   const {
     control,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    reset,
+    formState: { errors },
   } = useForm<PostFormData>({
     resolver: zodResolver(postSchema),
     defaultValues: {
       title: "",
-      category: undefined,
+      subject: undefined,
       content: "",
     },
   });
 
-  const onSubmit = async (data: PostFormData) => {
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // Here you would typically send the data to your backend
-      console.log("Post submitted:", data);
-
+  const { mutate: createPostMutation, isPending } = useMutation({
+    mutationFn: async (data: PostFormData) => {
+      const result = await createPost({ post: data });
+      if (result.error) {
+        throw new Error(result.error);
+      }
+      return result;
+    },
+    onSuccess: () => {
       toast({
-        title: "Post Created",
-        description: "Your post has been successfully created.",
+        title: "Success",
+        description: "Your post has been created successfully!",
       });
-    } catch (error) {
+      reset();
+    },
+    onError: (error) => {
       toast({
         title: "Error",
-        description: "Failed to create post. Please try again.",
+        description: error.message || "Failed to create post",
         variant: "destructive",
       });
-    }
+    },
+  });
+
+  const onSubmit = (data: PostFormData) => {
+    createPostMutation(data);
   };
 
   return (
@@ -126,31 +114,28 @@ export default function CreatePost() {
                 )}
               </div>
               <div className="space-y-2">
-                <Label htmlFor="category">Category</Label>
+                <Label htmlFor="subject">Category</Label>
                 <Controller
-                  name="category"
+                  name="subject"
                   control={control}
                   render={({ field }) => (
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger id="category">
-                        <SelectValue placeholder="Select a category" />
+                      <SelectTrigger id="subject">
+                        <SelectValue placeholder="Select a subject" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Mathematics">Mathematics</SelectItem>
-                        <SelectItem value="Physics">Physics</SelectItem>
-                        <SelectItem value="Biology">Biology</SelectItem>
-                        <SelectItem value="Chemistry">Chemistry</SelectItem>
-                        <SelectItem value="Intelligence">
-                          Intelligence
-                        </SelectItem>
-                        <SelectItem value="English">English</SelectItem>
+                        {testsConfig.subjects.map((subject) => (
+                          <SelectItem key={subject} value={subject}>
+                            {toTitleCase(subject)}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   )}
                 />
-                {errors.category && (
+                {errors.subject && (
                   <p className="text-red-500 text-sm mt-1">
-                    {errors.category.message}
+                    {errors.subject.message}
                   </p>
                 )}
               </div>
@@ -176,8 +161,8 @@ export default function CreatePost() {
               </div>
             </div>
             <CardFooter className="px-0 pt-4">
-              <Button type="submit" className="w-full" disabled={isSubmitting}>
-                {isSubmitting ? "Creating Post..." : "Create Post"}
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending ? "Creating Post..." : "Create Post"}
               </Button>
             </CardFooter>
           </form>

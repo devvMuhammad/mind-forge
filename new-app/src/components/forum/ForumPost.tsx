@@ -8,8 +8,15 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/./components/ui/badge";
+import { toTitleCase } from "@/lib/utils";
 
-function ForumPost(props) {
+function ForumPost(props: {
+  id: string;
+  studentName: string;
+  title: string;
+  description: string;
+  category: string;
+}) {
   return (
     <Link href={`/forum/${props.id}`}>
       <Card className="mb-4 transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
@@ -32,7 +39,7 @@ function ForumPost(props) {
                 <CardDescription>{props.studentName}</CardDescription>
               </div>
             </div>
-            <Badge variant="secondary">{props.category}</Badge>
+            <Badge variant="secondary">{toTitleCase(props.category)}</Badge>
           </div>
         </CardHeader>
         <CardContent>
