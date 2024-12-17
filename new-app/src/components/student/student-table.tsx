@@ -109,7 +109,7 @@ export function StudentTable({ data }: { data: Student[] }) {
   });
 
   return (
-    <div className="space-y-4">
+    <div className="px-2 space-y-4">
       <Input
         placeholder="Filter by name..."
         value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
