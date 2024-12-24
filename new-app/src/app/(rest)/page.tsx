@@ -14,8 +14,8 @@ export default function LandingPage() {
                 Empower Your Learning Journey
               </h1>
               <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
-                Join LearnHub to access cutting-edge projects, collaborate with
-                peers, and accelerate your skills in technology and engineering.
+                Join MindForge to prepare for NET Entry Tests and accelerate
+                your skills in technology and engineering.
               </p>
               <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
                 <div className="rounded-md shadow">
@@ -24,61 +24,6 @@ export default function LandingPage() {
                   </Button>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="lg:text-center">
-              <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">
-                Our Platform
-              </h2>
-              <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                Learn by Doing
-              </p>
-              <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-                Engage in real-world projects, receive mentorship, and build a
-                portfolio that stands out.
-              </p>
-            </div>
-
-            <div className="mt-10">
-              <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-                {[
-                  {
-                    name: "Hands-on Projects",
-                    description:
-                      "Work on industry-relevant projects to gain practical experience.",
-                  },
-                  {
-                    name: "Expert Mentorship",
-                    description:
-                      "Learn from experienced professionals in your field of study.",
-                  },
-                  {
-                    name: "Collaborative Learning",
-                    description:
-                      "Connect with peers and build your professional network.",
-                  },
-                  {
-                    name: "Skill Certification",
-                    description:
-                      "Earn certificates to showcase your newly acquired skills.",
-                  },
-                ].map((feature) => (
-                  <div key={feature.name} className="relative">
-                    <dt>
-                      <p className="text-lg leading-6 font-medium text-gray-900">
-                        {feature.name}
-                      </p>
-                    </dt>
-                    <dd className="mt-2 text-base text-gray-500">
-                      {feature.description}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
             </div>
           </div>
         </section>
@@ -104,7 +49,10 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
           <div className="mt-8 border-t border-gray-200 pt-8 md:flex md:items-center md:justify-between">
             <div className="flex space-x-6 md:order-2">
-              <Link href="#" className="text-gray-400 hover:text-gray-500">
+              <Link
+                href="https://twitter.com/devvMuhammad"
+                className="text-gray-400 hover:text-gray-500"
+              >
                 <span className="sr-only">Facebook</span>
                 <svg
                   className="h-6 w-6"
@@ -119,7 +67,10 @@ export default function LandingPage() {
                   />
                 </svg>
               </Link>
-              <Link href="#" className="text-gray-400 hover:text-gray-500">
+              <Link
+                href="https://twitter.com/devvMuhammad"
+                className="text-gray-400 hover:text-gray-500"
+              >
                 <span className="sr-only">Twitter</span>
                 <svg
                   className="h-6 w-6"
@@ -130,7 +81,10 @@ export default function LandingPage() {
                   <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
                 </svg>
               </Link>
-              <Link href="#" className="text-gray-400 hover:text-gray-500">
+              <Link
+                href="https://github.com/devvMuhammad"
+                className="text-gray-400 hover:text-gray-500"
+              >
                 <span className="sr-only">GitHub</span>
                 <svg
                   className="h-6 w-6"
@@ -147,7 +101,7 @@ export default function LandingPage() {
               </Link>
             </div>
             <p className="mt-8 text-base text-gray-400 md:mt-0 md:order-1">
-              &copy; 2023 LearnHub, Inc. All rights reserved.
+              &copy; 2023 MindForge, Inc. All rights reserved.
             </p>
           </div>
         </div>
